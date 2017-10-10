@@ -1,0 +1,2 @@
+# StarBot
+StarCraft Bot
