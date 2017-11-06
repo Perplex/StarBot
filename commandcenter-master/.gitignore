@@ -1,0 +1,20 @@
+# Cmake build routine
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# IDEs
+.vscode/
+vs/.vs/
+vs/commandcenter
+
+bin/CommandCenter
+bin/*.exe
+bin/*.ilk
+bin/TechTree.json
+*.tlog
+*.obj
+vs/RelWithDebInfo/CommandCenter.log
+*.log
+*.pdb
