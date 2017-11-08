@@ -13,8 +13,8 @@ StarCraft II Bot
   <dd> BotConfig - Strategy “Blink Stalker” (BuildingOrder)</dd>
   <dd> UnitInfoManager.cpp - Stalker Blink abilities.</dd>
   <dd> ProductionManager.cpp - Line 35: Build order macro design and triggers. (Cloaked units)</dd>
-  <dd> Line 69: Implement for early second base.</dd>
-  <dd> Line 177: Upgrade for Blink abilities and Attack/Defence upgrades.</dd>
+  <dd> <blockquote> Line 69: Implement for early second base.</blockquote></dd>
+  <dd> <blockquote> Line 177: Upgrade for Blink abilities and Attack/Defence upgrades.</blockquote></dd>
   <dd> CombatCommander.cpp - Line 63: Attack at specific timing and enough Stalkers.</dd>
   <dd> RangedManager.cpp - Line 47: BLINK KITING && Line 67: Target line.</dd>
 
