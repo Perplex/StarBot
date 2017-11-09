@@ -16,10 +16,10 @@
     
     "SC2API" :
     {
-        "BotRace"                   : "Zerg",
+        "BotRace"                   : "Protoss",
         "EnemyDifficulty"           : 2,
         "EnemyRace"                 : "Random",
-        "MapFile"                   : "InterloperLE.SC2Map",
+        "MapFile"                   : "CactusValleyLE.SC2Map",
         "StepSize"                  : 1
     },
         
