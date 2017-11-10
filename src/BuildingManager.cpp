@@ -420,7 +420,11 @@ CCTilePosition BuildingManager::getBuildingLocation(const Building & b)
     if (b.type.isResourceDepot())
     {
         // TODO: fix this so we can actually expand
-        //return m_bot.Bases().getNextExpansion(Players::Self);
+		//CCTilePosition newBasePosition;
+
+        //CCPosition newResourcePosition = m_bot.Bases().getNextExpansion(Players::Self);
+
+		//return CCTilePosition((int)newBasePosition.x, (int)newBasePosition.y);
     }
 
     // get a position within our region

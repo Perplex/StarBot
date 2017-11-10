@@ -276,7 +276,7 @@ void BaseLocationManager::drawBaseLocations()
     }
 
     // draw a purple sphere at the next expansion location
-    CCPosition nextExpansionPosition = getNextExpansion(Players::Self);
+    CCPosition nextExpansionPosition = getNextExpansion(Players::Self);;
 
     m_bot.Map().drawCircle(nextExpansionPosition, 1, CCColor(255, 0, 255));
     m_bot.Map().drawText(nextExpansionPosition, "Next Expansion Location", CCColor(255, 0, 255));

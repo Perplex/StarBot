@@ -17,10 +17,10 @@
     "SC2API" :
     {
         "BotRace"                   : "Protoss",
-        "EnemyDifficulty"           : 2,
+        "EnemyDifficulty"           : 4,
         "EnemyRace"                 : "Random",
         "MapFile"                   : "CactusValleyLE.SC2Map",
-        "StepSize"                  : 1
+        "StepSize"                  : 20
     },
         
     "Micro" :
@@ -88,7 +88,7 @@
     
     "SC2API Strategy" :
     {
-        "Protoss"                   : "Protoss_ZealotRush",
+        "Protoss"                   : "Protoss_SecondBase",
         "Terran"                    : "Terran_MarineRush",
         "Zerg"                      : "Zerg_2HatchRoach",
         
@@ -97,7 +97,9 @@
         "Strategies" :
         {
             "Protoss_ZealotRush"    : { "Race" : "Protoss", "OpeningBuildOrder" : ["Probe", "Probe", "Pylon", "Probe", "Probe", "Gateway", "Pylon", "Probe", "Gateway", "Probe", "Gateway", "Pylon", "Probe", "Zealot", "Zealot", "Pylon", "Zealot", "Zealot", "Pylon", "Zealot", "Zealot", "Zealot", "Zealot", "Zealot", "Zealot", "Zealot", "Zealot", "Zealot", "Zealot"]},
-            "Terran_MarineRush"     : { "Race" : "Terran",  "OpeningBuildOrder" : ["SCV", "SCV", "SupplyDepot", "SCV", "SCV", "Barracks", "Barracks", "Barracks", "Barracks", "SupplyDepot", "SupplyDepot", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine"] },
+            "Protoss_StalkerRush"   : { "Race" : "Protoss", "OpeningBuildOrder" : ["Probe", "Pylon", "Probe", "Probe", "Gateway", "Probe", "Pylon", "Assimilator", "Probe", "Zealot", "CyberneticsCore","MothershipCore", "WarpGateResearch", "Probe", "Pylon", "Stalker", "Stalker", "Assimilator", "Stalker", "Stalker", "Pylon", "Stalker", "Stalker", "Stalker", "Pylon", "Stalker", "Stalker"]},
+	    "Protoss_SecondBase"    : { "Race" : "Protoss", "OpeningBuildOrder" : ["Nexus"]},
+	    "Terran_MarineRush"     : { "Race" : "Terran",  "OpeningBuildOrder" : ["SCV", "SCV", "SupplyDepot", "SCV", "SCV", "Barracks", "Barracks", "Barracks", "Barracks", "SupplyDepot", "SupplyDepot", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine", "Marine"] },
             "Zerg_ZerglingRush"     : { "Race" : "Zerg",    "OpeningBuildOrder" : ["SpawningPool", "Drone", "Overlord", "Drone", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling", "Zergling"] },
             "Zerg_2HatchRoach"      : { "Race" : "Zerg",    "OpeningBuildOrder" : ["SpawningPool", "Drone", "Overlord", "Drone", "Drone", "Extractor", "Drone", "Drone", "Hatchery", "Drone", "Overlord", "Drone", "RoachWarren", "Drone", "Drone", "Drone", "Drone", "Roach", "Overlord", "Roach", "Roach", "Roach", "Roach", "Overlord", "Roach", "Roach", "Roach", "Roach", "Roach", "Roach", "Roach"] }
         }
