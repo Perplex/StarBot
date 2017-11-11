@@ -8,6 +8,7 @@ cmake_install.cmake
 .vscode/
 vs/.vs/
 vs/commandcenter
+vs/UpgradeLog2.htm
 
 bin/CommandCenter
 bin/*.exe
