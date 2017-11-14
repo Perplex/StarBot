@@ -317,13 +317,13 @@ const TypeData & TechTree::getData(const UnitType & type) const
 
 const TypeData & TechTree::getData(const CCUpgrade & type)  const
 {
-    if (m_upgradeData.find(type) == m_upgradeData.end())
-    {
-        //std::cout << "WARNING: Upgrade not found: " << sc2::UpgradeIDToName(type) << "\n";
-        return m_unitTypeData.begin()->second;
-    }
+	if (m_upgradeData.find(type) == m_upgradeData.end())
+	{
+		std::cout << "WARNING: Upgrade type not found: " << type << "\n";
+		return m_unitTypeData.begin()->second;
+	}
 
-    return m_upgradeData.at(type);
+	return m_upgradeData.at(type);
 }
 
 const TypeData & TechTree::getData(const MetaType & type) const

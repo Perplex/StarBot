@@ -174,7 +174,7 @@ void ProductionManager::create(const Unit & producer, BuildOrderItem & item)
     {
         // TODO: UPGRADES
         //Micro::SmartAbility(producer, m_bot.Data(item.type.getUpgradeID()).buildAbility, m_bot);
-		producer.upgrade(item.type.getUnitType());
+		producer.upgrade(item.type.getUpgrade());
     }
 }
 

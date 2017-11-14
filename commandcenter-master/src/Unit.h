@@ -67,5 +67,5 @@ public:
     void build          (const UnitType & buildingType, CCTilePosition pos) const;
     void buildTarget    (const UnitType & buildingType, const Unit & target) const;
     void train          (const UnitType & buildingType) const;
-	void upgrade		(const UnitType & upgradeType) const;
+	void upgrade		(const CCUpgrade & upgradeType) const;
 };

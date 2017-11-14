@@ -358,10 +358,10 @@ void Unit::train(const UnitType & type) const
 #endif
 }
 
-void Unit::upgrade(const UnitType & type) const {
-	BOT_ASSERT(isValid(), "Upgrade is not valid");
+void Unit::upgrade(const CCUpgrade & type) const {
+	BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
-	m_bot->Actions()->UnitCommand(m_unit, (sc2::AbilityID) 1593);
+	m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
 #endif
 }
 
