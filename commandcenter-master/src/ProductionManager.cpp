@@ -113,7 +113,6 @@ Unit ProductionManager::getProducer(const MetaType & type, CCPosition closestTo)
         // TODO: if unit is not powered continue
         // TODO: if the type is an addon, some special cases
         // TODO: if the type requires an addon and the producer doesn't have one
-
         // if we haven't cut it, add it to the set of candidates
         candidateProducers.push_back(unit);
     }
@@ -175,6 +174,7 @@ void ProductionManager::create(const Unit & producer, BuildOrderItem & item)
     {
         // TODO: UPGRADES
         //Micro::SmartAbility(producer, m_bot.Data(item.type.getUpgradeID()).buildAbility, m_bot);
+		producer.upgrade(item.type.getUnitType());
     }
 }
 
