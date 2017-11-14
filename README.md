@@ -1,8 +1,9 @@
 # StarBot - Automaton 2017
 StarCraft II Bot
 
-## Status (11/08/2017): In-Progress
-- Compilable Command Center and SC2 API files pushed
+## Status (13/11/2017): In-Progress
+- Compilable Command Center and SC2 API files pushed (Ceegan)
+- Blink Ability is researched (Ceegan)
 
 
 ## Todo:
@@ -11,10 +12,9 @@ StarCraft II Bot
  <dl>
   <dt>Must Do Task:</dt>
   <dd> BotConfig - Strategy “Blink Stalker” (BuildingOrder)</dd>
-  <dd> UnitInfoManager.cpp - Stalker Blink abilities.</dd>
   <dd> ProductionManager.cpp - Line 35: Build order macro design and triggers. (Cloaked units)</dd>
-  <dd> <blockquote> Line 69: Implement for early second base.</blockquote></dd>
-  <dd> <blockquote> Line 177: Upgrade for Blink abilities and Attack/Defence upgrades.</blockquote></dd>
+  <dd> ProductionManager.cpp - Line 69: Implement for early second base.</dd>
+  <dd> ProductionManager.cpp - Line 177: Upgrade for Blink abilities and Attack/Defence upgrades.</dd>
   <dd> CombatCommander.cpp - Line 63: Attack at specific timing and enough Stalkers.</dd>
   <dd> RangedManager.cpp - Line 47: BLINK KITING && Line 67: Target line.</dd>
 
