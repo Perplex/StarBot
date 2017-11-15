@@ -19,7 +19,7 @@
         "BotRace"                   : "Zerg",
         "EnemyDifficulty"           : 2,
         "EnemyRace"                 : "Random",
-        "MapFile"                   : "C:\\Users\\Gregory\\Documents\\GitHub\\StarBot\\CactusValleyLE.SC2Map",
+        "MapFile"                   : "C:\\Users\\Ceegan\\Desktop\\Scripts\\CLang\\C++\\CMPUT350\\StarBot\\CactusValleyLE.SC2Map",
         "StepSize"                  : 1
     },
         
