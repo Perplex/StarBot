@@ -4,6 +4,7 @@ StarCraft II Bot
 ## Status (13/11/2017): In-Progress
 - Compilable Command Center and SC2 API files pushed (Ceegan)
 - All upgrades can be researched (Ceegan)
+- Base expansion available (Ceegan)
 
 
 ## Todo:
@@ -13,7 +14,6 @@ StarCraft II Bot
   <dt>Must Do Task:</dt>
   <dd> BotConfig - Strategy “Blink Stalker” (BuildingOrder)</dd>
   <dd> ProductionManager.cpp - Line 35: Build order macro design and triggers. (Cloaked units)</dd>
-  <dd> ProductionManager.cpp - Line 69: Implement for early second base.</dd>
   <dd> CombatCommander.cpp - Line 63: Attack at specific timing and enough Stalkers.</dd>
   <dd> RangedManager.cpp - Line 47: BLINK KITING && Line 67: Target line.</dd>
 
