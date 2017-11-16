@@ -61,7 +61,7 @@ void ProductionManager::manageBuildOrderQueue()
     while (!m_queue.isEmpty())
     {
         // this is the unit which can produce the currentItem
-        Unit producer = getProducer(currentItem.type);
+		Unit producer = getProducer(currentItem.type);
 
         // check to see if we can make it right now
         bool canMake = canMakeNow(producer, currentItem.type);
@@ -159,12 +159,11 @@ void ProductionManager::create(const Unit & producer, BuildOrderItem & item)
 
     // if we're dealing with a building
     // TODO: deal with morphed buildings & addons
-    if (m_bot.Data(item.type).isBuilding)
-    {
-        // send the building task to the building manager
-
-        m_buildingManager.addBuildingTask(item.type.getUnitType(), Util::GetTilePosition(m_bot.GetStartLocation()));
-    }
+	if (m_bot.Data(item.type).isBuilding)
+	{
+		// send the building task to the building manager
+		m_buildingManager.addBuildingTask(item.type.getUnitType(), Util::GetTilePosition(m_bot.GetStartLocation()));
+	}
     // if we're dealing with a non-building unit
     else if (item.type.isUnit())
     {

@@ -239,9 +239,18 @@ CCTilePosition BuildingPlacer::getRefineryPosition()
         {
             continue;
         }
-
+		bool built = false;
         CCPosition geyserPos(unit.getPosition());
-
+		for (auto & refinery: m_bot.GetUnits()) {
+			if (refinery.getType().isRefinery()) {
+				if (refinery.getPosition() == geyserPos) {
+					built = true;
+				}
+			}
+		}
+		if (built) {
+			continue;
+		}
         // check to see if it's next to one of our depots
         bool nearDepot = false;
         for (auto & unit : m_bot.UnitInfo().getUnits(Players::Self))
@@ -251,7 +260,7 @@ CCTilePosition BuildingPlacer::getRefineryPosition()
                 nearDepot = true;
             }
         }
-
+		
         if (nearDepot)
         {
             double homeDistance = Util::Dist(unit, homePosition);

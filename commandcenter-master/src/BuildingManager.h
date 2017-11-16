@@ -44,4 +44,5 @@ public:
     bool                isBeingBuilt(UnitType type);
 
     std::vector<UnitType> buildingsQueued() const;
+
 };

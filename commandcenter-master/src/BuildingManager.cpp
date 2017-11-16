@@ -100,11 +100,11 @@ void BuildingManager::assignWorkersToUnassignedBuildings()
 
         // grab a worker unit from WorkerManager which is closest to this final position
         CCTilePosition testLocation = getBuildingLocation(b);
+
         if (!m_bot.Map().isValidTile(testLocation) || (testLocation.x == 0 && testLocation.y == 0))
         {
             continue;
         }
-
         b.finalPosition = testLocation;
 
         // grab the worker unit from WorkerManager which is closest to this final position
@@ -420,7 +420,7 @@ CCTilePosition BuildingManager::getBuildingLocation(const Building & b)
     if (b.type.isResourceDepot())
     {
         // TODO: fix this so we can actually expand
-        //return m_bot.Bases().getNextExpansion(Players::Self);
+		return Util::GetTilePosition(m_bot.Bases().getNextExpansion(Players::Self));
     }
 
     // get a position within our region
