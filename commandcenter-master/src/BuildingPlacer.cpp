@@ -248,9 +248,11 @@ CCTilePosition BuildingPlacer::getRefineryPosition()
 				}
 			}
 		}
+
 		if (built) {
 			continue;
 		}
+
         // check to see if it's next to one of our depots
         bool nearDepot = false;
         for (auto & unit : m_bot.UnitInfo().getUnits(Players::Self))

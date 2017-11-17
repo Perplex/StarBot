@@ -296,7 +296,12 @@ void Unit::move(const CCPosition & targetPosition) const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
-    m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::MOVE, targetPosition);
+	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_STALKER) {
+		m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::EFFECT_BLINK_STALKER, targetPosition);
+	}
+	else {
+		m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::MOVE, targetPosition);
+	}
 #else
     m_unit->move(targetPosition);
 #endif
@@ -306,7 +311,12 @@ void Unit::move(const CCTilePosition & targetPosition) const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
-    m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::MOVE, CCPosition((float)targetPosition.x, (float)targetPosition.y));
+	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_STALKER) {
+		m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::EFFECT_BLINK_STALKER, CCPosition((float)targetPosition.x, (float)targetPosition.y));
+	}
+	else {
+		m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::MOVE, CCPosition((float)targetPosition.x, (float)targetPosition.y));
+	}
 #else
     m_unit->move(CCPosition(targetPosition));
 #endif

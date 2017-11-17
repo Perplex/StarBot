@@ -57,7 +57,7 @@ BaseLocation::BaseLocation(CCBot & bot, int baseID, const std::vector<Unit> & re
 
     // calculate the center of the resources
     size_t numResources = m_minerals.size() + m_geysers.size();
-	if (m_left - m_right < m_bottom - m_top) {
+	if ((int) (m_left - m_right) < (int)(m_bottom - m_top)) {
 		if (m_top > bot.Map().height() / 2 && m_left < bot.Map().width() / 2) {
 			m_centerOfResources = CCPosition(m_left + (m_right - m_left) / 2, (m_top - 10) + (m_bottom - (m_top - 10)) / 2);
 		}
@@ -65,13 +65,16 @@ BaseLocation::BaseLocation(CCBot & bot, int baseID, const std::vector<Unit> & re
 			m_centerOfResources = CCPosition(m_left + (m_right - m_left) / 2, (m_top + 10) + (m_bottom - (m_top + 10)) / 2);
 		}
 	}
-	else {
+	else if ((int) (m_left - m_right) > (int)(m_bottom - m_top)){
 		if (m_top < bot.Map().height() / 2 && m_left < bot.Map().width() / 2) {
 			m_centerOfResources = CCPosition((m_left + 10) + (m_right - (m_left + 10)) / 2, m_top + (m_bottom - m_top) / 2);
 		}
 		else {
 			m_centerOfResources = CCPosition((m_left - 10) + (m_right - (m_left - 10)) / 2, m_top + (m_bottom - m_top) / 2);
 		}
+	}
+	else {
+		m_centerOfResources = CCPosition(m_left + (m_right - m_left) / 2, m_top + (m_bottom - m_top) / 2);
 	}
 
     // compute this BaseLocation's DistanceMap, which will compute the ground distance
