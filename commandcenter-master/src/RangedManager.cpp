@@ -45,26 +45,7 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
                 if (m_bot.Config().KiteWithRangedUnits)
                 {
                     // TODO: implement kiting
-					float distToEnemy = Util::Dist(rangedUnit, target);
-
-					if (distToEnemy > 5) {
-						rangedUnit.attackUnit(target);
-					}
-					else {
-						for (auto &tiles : m_bot.Map().getClosestTilesTo(rangedUnit.getTilePosition())) {
-							bool pass = false;
-							for (auto &unit : m_bot.GetUnits()){
-								if (unit.getTilePosition() == tiles) {
-									pass = true;
-									break;
-								}
-							}
-							if (!pass && Util::Dist(target, CCPosition((float) tiles.x, (float) tiles.y)) > distToEnemy + 4) {
-								rangedUnit.move(tiles);
-								break;
-							}
-						}
-					}
+                    rangedUnit.attackUnit(target);
                 }
                 else
                 {

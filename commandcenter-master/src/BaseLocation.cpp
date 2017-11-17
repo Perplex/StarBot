@@ -57,7 +57,6 @@ BaseLocation::BaseLocation(CCBot & bot, int baseID, const std::vector<Unit> & re
 
     // calculate the center of the resources
     size_t numResources = m_minerals.size() + m_geysers.size();
-
 	if ((int) (m_left - m_right) < (int)(m_bottom - m_top)) {
 		if (m_top > bot.Map().height() / 2 && m_left < bot.Map().width() / 2) {
 			m_centerOfResources = CCPosition(m_left + (m_right - m_left) / 2, (m_top - 10) + (m_bottom - (m_top - 10)) / 2);
