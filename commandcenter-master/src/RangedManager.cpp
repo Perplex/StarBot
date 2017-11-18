@@ -47,7 +47,7 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
                     // TODO: implement kiting
 					float distToEnemy = Util::Dist(rangedUnit, target);
 
-					if (distToEnemy > 5) {
+					if ((distToEnemy > 5 && rangedUnit.getWeaponCooldown() == 0) || target.getType().isBuilding()) {
 						rangedUnit.attackUnit(target);
 					}
 					else {
