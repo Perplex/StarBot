@@ -156,7 +156,6 @@ void ProductionManager::create(const Unit & producer, BuildOrderItem & item)
     {
         return;
     }
-
     // if we're dealing with a building
     // TODO: deal with morphed buildings & addons
 	if (m_bot.Data(item.type).isBuilding)
@@ -173,6 +172,7 @@ void ProductionManager::create(const Unit & producer, BuildOrderItem & item)
     {
         // TODO: UPGRADES
         //Micro::SmartAbility(producer, m_bot.Data(item.type.getUpgradeID()).buildAbility, m_bot);
+		
 		producer.upgrade(item.type.getUpgrade());
     }
 }
@@ -183,7 +183,7 @@ bool ProductionManager::canMakeNow(const Unit & producer, const MetaType & type)
     {
         return false;
     }
-
+	
 #ifdef SC2API
     sc2::AvailableAbilities available_abilities = m_bot.Query()->GetAbilitiesForUnit(producer.getUnitPtr());
 
@@ -195,7 +195,23 @@ bool ProductionManager::canMakeNow(const Unit & producer, const MetaType & type)
     else
     {
         // check to see if one of the unit's available abilities matches the build ability type
-        sc2::AbilityID MetaTypeAbility = m_bot.Data(type).buildAbility;
+		sc2::AbilityID MetaTypeAbility = m_bot.Data(type).buildAbility;
+		if (MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL1 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL2 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL3) {
+			MetaTypeAbility = sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONS;
+		}
+		else if (MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMORLEVEL1 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMORLEVEL2 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMORLEVEL3) {
+			MetaTypeAbility = sc2::ABILITY_ID::RESEARCH_PROTOSSAIRARMOR;
+		}
+		else if (MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL1 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL2 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONSLEVEL3){
+			MetaTypeAbility = sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDWEAPONS;
+		}
+		else if (MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMORLEVEL1 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMORLEVEL2 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMORLEVEL3) {
+			MetaTypeAbility = sc2::ABILITY_ID::RESEARCH_PROTOSSGROUNDARMOR;
+		}
+		else if (MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDSLEVEL1 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDSLEVEL2 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDSLEVEL3) {
+			MetaTypeAbility = sc2::ABILITY_ID::RESEARCH_PROTOSSSHIELDS;
+		}
+
         for (const sc2::AvailableAbility & available_ability : available_abilities.abilities)
         {
             if (available_ability.ability_id == MetaTypeAbility)
