@@ -1,11 +1,11 @@
 # StarBot - Automaton 2017
 StarCraft II Bot
 
-## Status (13/11/2017): In-Progress
+## Status (18/11/2017): In-Progress
 - Compilable Command Center and SC2 API files pushed (Ceegan)
 - All upgrades can be researched (Ceegan)
 - Base expansion available (Ceegan)
-
+- Blink kitting based on distance and weapon cooldown (Ceegan)
 
 ## Todo:
   Race: Protoss
@@ -15,7 +15,6 @@ StarCraft II Bot
   <dd> BotConfig - Strategy “Blink Stalker” (BuildingOrder)</dd>
   <dd> ProductionManager.cpp - Line 35: Build order macro design and triggers. (Cloaked units)</dd>
   <dd> CombatCommander.cpp - Line 63: Attack at specific timing and enough Stalkers.</dd>
-  <dd> RangedManager.cpp - Line 47: BLINK KITING && Line 67: Target line.</dd>
   <dd> Unit.cpp - Nexus applys ChronoBoost to buildings if it has power "BlinkTech Research > Weapon/Defend Upgrade > Produce Stalker > Produce Probe".</dd>
 
  <dt>Should Do Task:</dt>
@@ -23,7 +22,6 @@ StarCraft II Bot
  <dd> StrategyManager.cpp - Line 128: Recognize enemy name and apply strategies for special enemy’s army. (Fill BotConfig)</dd>
  <dd> ScoutManager.cpp - Early scout.  Assigning few workers scout the whole map for wide buildings or bases if the main base does not have any tech-building at specific timing.</dd>
  <dd> Squad.cpp - Line 123: Squard detectors.</dd>
-    
     
  <dt>May Do Task:</dt>
  <dd> BuildingManager.cpp - Line 427: Implement basic options for special pylon/cannon spacing.</dd>
