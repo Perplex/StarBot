@@ -16,7 +16,7 @@ StarCraft II Bot
   <dd> BotConfig - Strategy “Blink Stalker” (BuildingOrder)</dd>
   <dd> ProductionManager.cpp - Line 35: Build order macro design and triggers. (Cloaked units)</dd>
   <dd> CombatCommander.cpp - Line 63: Attack at specific timing and enough Stalkers.</dd>
-  <dd> Unit.cpp - Nexus applys ChronoBoost to buildings if it has power "BlinkTech Research > Weapon/Defend Upgrade > Produce Stalker > Produce Probe".</dd>
+  <dd> Unit.cpp - Nexus applys ChronoBoost to buildings if it has power "BlinkTech Research > Weapon/Defend Upgrade > Produce Stalker > Produce Probe".</dd>
   <dd> Wrapgate tile recognization and wrap stalkers directly to front.</dd>
   <dd> ScoutManager.cpp - Scout worker hide outside after scout and build front pylon while attacking starts.</dd>
 
