@@ -6,6 +6,7 @@ StarCraft II Bot
 - All upgrades can be researched (Ceegan)
 - Base expansion available (Ceegan)
 - Blink kitting based on distance and weapon cooldown (Ceegan)
+- "Blink Stalker" strategies and building order(Zhai)
 
 ## Todo:
   Race: Protoss
@@ -16,6 +17,8 @@ StarCraft II Bot
   <dd> ProductionManager.cpp - Line 35: Build order macro design and triggers. (Cloaked units)</dd>
   <dd> CombatCommander.cpp - Line 63: Attack at specific timing and enough Stalkers.</dd>
   <dd> Unit.cpp - Nexus applys ChronoBoost to buildings if it has power "BlinkTech Research > Weapon/Defend Upgrade > Produce Stalker > Produce Probe".</dd>
+  <dd> Wrapgate tile recognization and wrap stalkers directly to front.</dd>
+  <dd> ScoutManager.cpp - Scout worker hide outside after scout and build front pylon while attacking starts.</dd>
 
  <dt>Should Do Task:</dt>
  <dd> BaseLocationManager.cpp - Line 325: Implement method buildingInTheWay to check if there are any units on the tile.</dd>  
