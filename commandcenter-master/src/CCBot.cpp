@@ -62,23 +62,19 @@ void CCBot::OnStep()
 	std::vector<Unit> gateways;
 	std::vector<Unit> nexuses;
 	std::vector<Unit> twilightCouncils;
-	std::vector<Unit> cyberneticsCores;
+	std::vector<Unit> forges;
 	for (auto & unit : m_allUnits) {
 		if (unit.getPlayer() == Players::Self) {
 			if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_NEXUS) {
-				//std::cout << "found nexus" << std::endl;
 				nexuses.push_back(unit);
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_GATEWAY) {
-				std::cout << "found gateway" << std::endl;
 				gateways.push_back(unit);
 			}
-			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE) {
-				std::cout << "found cybernetics core" << std::endl;
-				cyberneticsCores.push_back(unit);
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_FORGE) {
+				forges.push_back(unit);
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL) {
-				std::cout << "found twilight council" << std::endl;
 				twilightCouncils.push_back(unit);
 			}
 		}
@@ -87,7 +83,7 @@ void CCBot::OnStep()
 		for (auto & unit : twilightCouncils) {
 			nexus.chronoBoost(unit);
 		}
-		for (auto & unit : cyberneticsCores) {
+		for (auto & unit : forges) {
 			nexus.chronoBoost(unit);
 		}
 		for (auto & unit : gateways) {

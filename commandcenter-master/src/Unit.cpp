@@ -121,17 +121,10 @@ CCHealth Unit::getEnergy() const
 void Unit::chronoBoost(const Unit & target) const 
 {
 #ifdef SC2API
-	for (auto & abilites : m_bot->Query()->GetAbilitiesForUnit(m_unit).abilities) {
-		std::cout << abilites.ability_id << std::endl;
-	}
 	if (m_unit->energy >= 50) {
 		if (target.isTraining()) {
-			std::cout << "applied chronobost " << m_unit->energy << std::endl;
-			m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::EFFECT_CHRONOBOOST, target.getUnitPtr());
+			m_bot->Actions()->UnitCommand(m_unit, 3755, target.getUnitPtr());
 		}
-	}
-	else {
-		std::cout << "less than 50 energy " << m_unit->energy << std::endl;
 	}
 #endif
 }
