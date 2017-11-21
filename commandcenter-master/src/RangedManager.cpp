@@ -47,7 +47,7 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
                     // TODO: implement kiting
 					float distToEnemy = Util::Dist(rangedUnit, target);
 
-					if ((distToEnemy > 5 && rangedUnit.getWeaponCooldown() == 0) || target.getType().isBuilding()) {
+					if ((distToEnemy > 5 && rangedUnit.getWeaponCooldown() == 0) || target.getType().isBuilding() || target.getType().isOverlord() || target.getType().isWorker()) {
 						rangedUnit.attackUnit(target);
 					}
 					else {
@@ -60,7 +60,7 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
 										break;
 									}
 								}
-								if (!pass && Util::Dist(target, CCPosition((float)tiles.x, (float)tiles.y)) > distToEnemy + 2) {
+								if (!pass && Util::Dist(target, CCPosition((float)tiles.x, (float)tiles.y)) > distToEnemy + 3) {
 									rangedUnit.move(tiles);
 									break;
 								}
