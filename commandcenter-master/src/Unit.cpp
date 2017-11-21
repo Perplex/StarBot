@@ -18,7 +18,6 @@ Unit::Unit(const sc2::Unit * unit, CCBot & bot)
 {
     
 }
-
 const sc2::Unit * Unit::getUnitPtr() const
 {
     return m_unit;
@@ -112,12 +111,30 @@ CCHealth Unit::getEnergy() const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
+	std::cout << "id: " << m_unitID << " has energy " << m_unitType.getName() << std::endl;
+	
     return m_unit->energy;
 #else
     return m_unit->getEnergy();
 #endif
 }
-
+void Unit::chronoBoost(const Unit & target) const 
+{
+#ifdef SC2API
+	for (auto & abilites : m_bot->Query()->GetAbilitiesForUnit(m_unit).abilities) {
+		std::cout << abilites.ability_id << std::endl;
+	}
+	if (m_unit->energy >= 50) {
+		if (target.isTraining()) {
+			std::cout << "applied chronobost " << m_unit->energy << std::endl;
+			m_bot->Actions()->UnitCommand(m_unit, sc2::ABILITY_ID::EFFECT_CHRONOBOOST, target.getUnitPtr());
+		}
+	}
+	else {
+		std::cout << "less than 50 energy " << m_unit->energy << std::endl;
+	}
+#endif
+}
 float Unit::getBuildPercentage() const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
@@ -230,6 +247,7 @@ bool Unit::isPowered() const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
+	
     return m_unit->is_powered;
 #else
     return m_unit->isPowered();

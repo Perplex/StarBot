@@ -68,4 +68,5 @@ public:
     void buildTarget    (const UnitType & buildingType, const Unit & target) const;
     void train          (const UnitType & buildingType) const;
 	void upgrade		(const CCUpgrade & upgradeType) const;
+	void chronoBoost	(const Unit & target) const;
 };

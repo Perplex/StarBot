@@ -59,12 +59,51 @@ void CCBot::OnGameStart()
 void CCBot::OnStep()
 {
     setUnits();
+	std::vector<Unit> gateways;
+	std::vector<Unit> nexuses;
+	std::vector<Unit> twilightCouncils;
+	std::vector<Unit> cyberneticsCores;
+	for (auto & unit : m_allUnits) {
+		if (unit.getPlayer() == Players::Self) {
+			if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_NEXUS) {
+				//std::cout << "found nexus" << std::endl;
+				nexuses.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_GATEWAY) {
+				std::cout << "found gateway" << std::endl;
+				gateways.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE) {
+				std::cout << "found cybernetics core" << std::endl;
+				cyberneticsCores.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL) {
+				std::cout << "found twilight council" << std::endl;
+				twilightCouncils.push_back(unit);
+			}
+		}
+	}
+	for (auto & nexus : nexuses) {
+		for (auto & unit : twilightCouncils) {
+			nexus.chronoBoost(unit);
+		}
+		for (auto & unit : cyberneticsCores) {
+			nexus.chronoBoost(unit);
+		}
+		for (auto & unit : gateways) {
+			nexus.chronoBoost(unit);
+		}
+		for (auto & unit : nexuses) {
+			nexus.chronoBoost(unit);
+		}
+	}
+
     m_map.onFrame();
     m_unitInfo.onFrame();
     m_bases.onFrame();
     m_workers.onFrame();
     m_strategy.onFrame();
-
+	
     m_gameCommander.onFrame();
 
 #ifdef SC2API
