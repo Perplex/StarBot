@@ -94,6 +94,56 @@ void CCBot::OnStep()
 		}
 	}
 
+	// Stuff for warpgate
+	// Static so its only initalized once
+	static bool isPylonBuilt = false;
+	std::vector<const BaseLocation *> thebases;
+	const BaseLocation *enemybase = m_bases.getPlayerStartingBaseLocation(Players::Enemy);
+	static const BaseLocation *warpTobase;
+	if (enemybase != 0) {
+		// If base is found it can be seen here
+		const CCPosition enemyPos = enemybase->getPosition();
+		thebases = m_bases.getBaseLocations();
+		static float close_x = 1000000;
+		static float close_y = 1000000;
+		static float dbx = 100000;
+		static float dby = 100000;
+		static CCPosition warpTo;
+		for (size_t index = 0; index != thebases.size(); ++index) {
+			static float distbetween_x;
+			static float distbetween_y;
+			warpTo = thebases[index]->getPosition();
+			if (warpTo.x == enemyPos.x || warpTo.y == enemyPos.y) {
+				distbetween_x = warpTo.x - enemyPos.x;
+				distbetween_y = warpTo.y - enemyPos.y;
+				dbx = warpTo.x - enemyPos.x;
+				dby = warpTo.y - enemyPos.y;
+			} 
+			if (distbetween_x >= 0 || distbetween_x < dbx) {
+				close_x = warpTo.x;
+			}
+			if (distbetween_y >= 0 || distbetween_y < dby) {
+				close_y = warpTo.y;
+			}
+			
+			//std::cout << "x: " << distbetween_x << "y: " << distbetween_y << std::endl;
+		}
+
+		// once done find lowest x and y base
+		for (size_t index = 0; index != thebases.size(); ++index) {
+			warpTo = thebases[index]->getPosition();
+			if (warpTo.x == close_x || warpTo.y == close_y) {
+				warpTobase = thebases[index];
+				break;
+			}
+		}
+		//std::cout << "x: " << enemyPos.x << "y: " << enemyPos.y << std::endl;
+	}
+
+	if (warpTobase != 0) {
+		std::cout << "x: " << warpTobase->getPosition().x << " y: " << warpTobase->getPosition().y << std::endl;
+	}
+
     m_map.onFrame();
     m_unitInfo.onFrame();
     m_bases.onFrame();
