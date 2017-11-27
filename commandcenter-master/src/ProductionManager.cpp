@@ -33,6 +33,12 @@ void ProductionManager::onFrame()
     manageBuildOrderQueue();
 
     // TODO: if nothing is currently building, get a new goal from the strategy manager
+	if (m_queue.isEmpty()) {
+		BuildOrder buildOrder;
+		MetaType MetaType("Stalker", m_bot);
+		buildOrder.add(MetaType);
+		m_queue.queueAsLowestPriority(buildOrder[0], true);
+	}
     // TODO: detect if there's a build order deadlock once per second
     // TODO: triggers for game things like cloaked units etc
 
@@ -268,7 +274,6 @@ int ProductionManager::getFreeGas()
 bool ProductionManager::meetsReservedResources(const MetaType & type)
 {
     // return whether or not we meet the resources
-
     return (m_bot.Data(type).mineralCost <= getFreeMinerals()) && (m_bot.Data(type).gasCost <= getFreeGas());
 }
 

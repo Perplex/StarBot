@@ -63,6 +63,7 @@ void CCBot::OnStep()
 	std::vector<Unit> nexuses;
 	std::vector<Unit> twilightCouncils;
 	std::vector<Unit> forges;
+	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
 		if (unit.getPlayer() == Players::Self) {
 			if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_NEXUS) {
