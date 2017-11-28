@@ -66,6 +66,7 @@ void CCBot::OnStep()
 	std::vector<Unit> probes;
 	std::vector<Unit> stalkers;
 	std::vector<Unit> pylons;
+	std::vector<Unit> cores;
 
 	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
@@ -90,6 +91,9 @@ void CCBot::OnStep()
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PYLON) {
 				pylons.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE) {
+				cores.push_back(unit);
 			}
 		}
 	}
@@ -158,7 +162,13 @@ void CCBot::OnStep()
 		}
 	}
 
-	std::cout << isPylonBuilt << std::endl;
+	// FORCE UPGRADE THE CYBER CORE
+	static bool hasSearched = false;
+	if (cores.size() > 0 && !hasSearched) {
+		cores[0].upgrade(sc2::UPGRADE_ID::WARPGATERESEARCH);
+	}
+
+	//std::cout << isPylonBuilt << std::endl;
 	 
     m_map.onFrame();
     m_unitInfo.onFrame();
