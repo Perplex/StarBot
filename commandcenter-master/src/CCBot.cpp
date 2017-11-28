@@ -139,13 +139,15 @@ void CCBot::OnStep()
 	if (warpTobase != 0) {
 		//std::cout << "x: " << warpTobase->getPosition().x << " y: " << warpTobase->getPosition().y << std::endl;
 	}
+	// Get static unit so this only happens once
+	static Unit aProbe = probes[0];
 
 	if (stalkers.size() > 0 && !isPylonBuilt) {
-		probes[0].move(Util::GetTilePosition(warpTo));
-		float isCloseTox = probes[0].getPosition().x - warpTobase->getPosition().x;
-		float isCloseToy = probes[0].getPosition().y - warpTobase->getPosition().y;
+		aProbe.move(Util::GetTilePosition(warpTo));
+		float isCloseTox = aProbe.getPosition().x - warpTobase->getPosition().x;
+		float isCloseToy = aProbe.getPosition().y - warpTobase->getPosition().y;
 		if (isCloseTox < 1 && isCloseTox > -1 && isCloseToy < 1 && isCloseToy > -1) {
-			probes[0].build(UnitType(sc2::UNIT_TYPEID::PROTOSS_PYLON, *this), Util::GetTilePosition(warpTo));
+			aProbe.build(UnitType(sc2::UNIT_TYPEID::PROTOSS_PYLON, *this), Util::GetTilePosition(warpTo));
 		}
 		for (auto & pylon : pylons) {
 			float isCloseTopx = pylon.getPosition().x - warpTobase->getPosition().x;
