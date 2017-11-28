@@ -9,6 +9,7 @@ CCBot::CCBot()
     , m_gameCommander(*this)
     , m_strategy(*this)
     , m_techTree(*this)
+	, expanded(false)
 {
     
 }
@@ -184,13 +185,22 @@ void CCBot::OnStep()
 	}
 
 	//std::cout << isPylonBuilt << std::endl;
-	 
+
+	//expand base if running low on resources, only once atm
+	if (!expanded) {
+		for (auto & mineral : m_bases.getPlayerStartingBaseLocation(Players::Self)->getMinerals()) {
+			if (mineral.getUnitPtr()->mineral_contents < 100) {
+				m_gameCommander.expandBase();
+				expanded = true;
+				break;
+			}
+		}
+	}
     m_map.onFrame();
     m_unitInfo.onFrame();
     m_bases.onFrame();
     m_workers.onFrame();
     m_strategy.onFrame();
-	
     m_gameCommander.onFrame();
 
 #ifdef SC2API

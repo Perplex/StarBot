@@ -34,6 +34,7 @@ public:
     void    onFrame();
     void    onUnitDestroy(const Unit & unit);
     void    drawProductionInformation();
+	void	createNewBase();
 
     Unit getProducer(const MetaType & type, CCPosition closestTo = CCPosition(0, 0));
 };

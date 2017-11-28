@@ -145,7 +145,11 @@ void GameCommander::onUnitCreate(const Unit & unit)
 
 void GameCommander::onUnitDestroy(const Unit & unit)
 {
-    //_productionManager.onUnitDestroy(unit);
+    m_productionManager.onUnitDestroy(unit);
+}
+
+void GameCommander::expandBase() {
+	m_productionManager.createNewBase();
 }
 
 

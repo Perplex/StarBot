@@ -28,6 +28,7 @@ class CCBot
     BotConfig               m_config;
     TechTree                m_techTree;
     GameCommander           m_gameCommander;
+	bool					expanded;
 
     std::vector<Unit>       m_allUnits;
     std::vector<CCPosition> m_baseLocations;

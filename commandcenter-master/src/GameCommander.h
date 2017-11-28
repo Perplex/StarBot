@@ -37,6 +37,7 @@ public:
     void setValidUnits();
     void setScoutUnits();
     void setCombatUnits();
+	void expandBase();
 
     void drawDebugInterface();
     void drawGameInformation(int x, int y);
