@@ -138,6 +138,16 @@ void CCBot::OnStep()
 		}
 		warpTo = thebases[selected]->getPosition();
 		warpTobase = thebases[selected];
+
+		// Do it once more
+		for (size_t index = 0; index != thebases.size(); ++index) {
+			if (Util::Dist(thebases[index]->getPosition(), enemyPos) < max && thebases[index]->getPosition().x != enemyPos.x && thebases[index]->getPosition().y != enemyPos.y) {
+				max = Util::Dist(thebases[index]->getPosition(), enemyPos);
+				selected = index;
+			}
+		}
+		warpTo = thebases[selected]->getPosition();
+		warpTobase = thebases[selected];
 	}
 
 	if (warpTobase != 0) {
@@ -152,6 +162,11 @@ void CCBot::OnStep()
 		float isCloseToy = aProbe.getPosition().y - warpTobase->getPosition().y;
 		if (isCloseTox < 1 && isCloseTox > -1 && isCloseToy < 1 && isCloseToy > -1) {
 			aProbe.build(UnitType(sc2::UNIT_TYPEID::PROTOSS_PYLON, *this), Util::GetTilePosition(warpTo));
+
+			// Once its being built upgrade to warpgate
+			for (auto & gates : gateways) {
+				gates.morphWarpGate(gates);
+			}
 		}
 		for (auto & pylon : pylons) {
 			float isCloseTopx = pylon.getPosition().x - warpTobase->getPosition().x;
