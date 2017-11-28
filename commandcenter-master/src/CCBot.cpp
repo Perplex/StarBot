@@ -66,6 +66,8 @@ void CCBot::OnStep()
 	std::vector<Unit> probes;
 	std::vector<Unit> stalkers;
 	std::vector<Unit> pylons;
+
+	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
 		if (unit.getPlayer() == Players::Self) {
 			if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_NEXUS) {
