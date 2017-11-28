@@ -23,6 +23,7 @@ class ProductionManager
     void    manageBuildOrderQueue();
     int     getFreeMinerals();
     int     getFreeGas();
+	bool	doneQueue;
 
 public:
 

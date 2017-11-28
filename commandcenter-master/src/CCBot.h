@@ -66,6 +66,7 @@ public:
 
     int GetMinerals() const;
     int GetGas() const;
+	int GetSupplyRemaining() const;
     Unit GetUnit(const CCUnitID & tag) const;
     const std::vector<Unit> & GetUnits() const;
     const std::vector<CCPosition> & GetStartLocations() const;

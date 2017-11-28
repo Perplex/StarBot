@@ -6,6 +6,7 @@ ProductionManager::ProductionManager(CCBot & bot)
     : m_bot             (bot)
     , m_buildingManager (bot)
     , m_queue           (bot)
+	,doneQueue			(false)
 {
 
 }
@@ -29,16 +30,19 @@ void ProductionManager::onStart()
 
 void ProductionManager::onFrame()
 {
-    // check the _queue for stuff we can build
-    manageBuildOrderQueue();
-
     // TODO: if nothing is currently building, get a new goal from the strategy manager
+
 	if (m_queue.isEmpty()) {
+		doneQueue = true;
 		BuildOrder buildOrder;
-		MetaType MetaType("Stalker", m_bot);
-		buildOrder.add(MetaType);
-		m_queue.queueAsLowestPriority(buildOrder[0], true);
+		MetaType metaStalker("Stalker", m_bot);
+		std::cout << metaStalker.getUnitType().getName() << " supply needed: " << m_bot.Data(metaStalker.getUnitType()).supplyCost << " supply remaining: " << m_bot.GetSupplyRemaining() << std::endl;
+		
+		buildOrder.add(metaStalker);
+		m_queue.queueAsLowestPriority(buildOrder[0], false);
 	}
+	// check the _queue for stuff we can build
+	manageBuildOrderQueue();
     // TODO: detect if there's a build order deadlock once per second
     // TODO: triggers for game things like cloaked units etc
 
@@ -77,6 +81,13 @@ void ProductionManager::manageBuildOrderQueue()
         // if we can make the current item
         if (producer.isValid() && canMake)
         {
+			if (doneQueue && (m_bot.GetSupplyRemaining() <= 6)) {
+				BuildOrder buildOrder;
+				std::cout << "pylon added" << std::endl;
+				MetaType metaPylon("Pylon", m_bot);
+				buildOrder.add(metaPylon);
+				m_queue.queueAsHighestPriority(buildOrder[0], true);
+			}
             // create it and remove it from the _queue
             create(producer, currentItem);
             m_queue.removeCurrentHighestPriorityItem();
