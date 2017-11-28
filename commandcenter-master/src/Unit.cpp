@@ -121,7 +121,7 @@ CCHealth Unit::getEnergy() const
 void Unit::morphWarpGate(const Unit & target) const
 {
 #ifdef SC2API
-	m_bot->Actions()->UnitCommand(m_unit, 1518, target.getUnitPtr());
+	m_bot->Actions()->UnitCommand(m_unit, 1518);
 #endif
 }
 
@@ -407,6 +407,10 @@ void Unit::train(const UnitType & type) const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
+	if (type.getName() == "Stalker") {
+		//TODO get pylon location
+		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility, );
+	}
     m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
 #else
     m_unit->train(type.getAPIUnitType());

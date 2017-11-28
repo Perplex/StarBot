@@ -157,6 +157,10 @@ void CCBot::OnStep()
 	// Get static unit so this only happens once
 	static Unit aProbe = probes[0];
 
+	for (auto & gates : gateways) {
+
+		gates.morphWarpGate(gates);
+	}
 	if (stalkers.size() > 0 && !isPylonBuilt) {
 		aProbe.move(Util::GetTilePosition(warpTo));
 		float isCloseTox = aProbe.getPosition().x - warpTobase->getPosition().x;
@@ -165,9 +169,7 @@ void CCBot::OnStep()
 			aProbe.build(UnitType(sc2::UNIT_TYPEID::PROTOSS_PYLON, *this), Util::GetTilePosition(warpTo));
 
 			// Once its being built upgrade to warpgate
-			for (auto & gates : gateways) {
-				gates.morphWarpGate(gates);
-			}
+
 		}
 		for (auto & pylon : pylons) {
 			float isCloseTopx = pylon.getPosition().x - warpTobase->getPosition().x;
