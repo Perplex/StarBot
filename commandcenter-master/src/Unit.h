@@ -69,4 +69,5 @@ public:
     void train          (const UnitType & buildingType) const;
 	void upgrade		(const CCUpgrade & upgradeType) const;
 	void chronoBoost	(const Unit & target) const;
+	void morphWarpGate	(const Unit & target) const;
 };

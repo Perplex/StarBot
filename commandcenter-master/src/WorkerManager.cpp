@@ -25,7 +25,6 @@ void WorkerManager::onFrame()
     drawWorkerInformation();
 
     m_workerData.drawDepotDebugInfo();
-
     handleRepairWorkers();
 }
 

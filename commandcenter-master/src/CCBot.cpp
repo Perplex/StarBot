@@ -63,6 +63,11 @@ void CCBot::OnStep()
 	std::vector<Unit> nexuses;
 	std::vector<Unit> twilightCouncils;
 	std::vector<Unit> forges;
+	std::vector<Unit> probes;
+	std::vector<Unit> stalkers;
+	std::vector<Unit> pylons;
+	std::vector<Unit> cores;
+
 	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
 		if (unit.getPlayer() == Players::Self) {
@@ -77,6 +82,18 @@ void CCBot::OnStep()
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_TWILIGHTCOUNCIL) {
 				twilightCouncils.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PROBE) {
+				probes.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_STALKER) {
+				stalkers.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PYLON) {
+				pylons.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE) {
+				cores.push_back(unit);
 			}
 		}
 	}
@@ -101,6 +118,7 @@ void CCBot::OnStep()
 	std::vector<const BaseLocation *> thebases;
 	const BaseLocation *enemybase = m_bases.getPlayerStartingBaseLocation(Players::Enemy);
 	static const BaseLocation *warpTobase;
+	static CCPosition warpTo;
 	if (enemybase != 0) {
 		// If base is found it can be seen here
 		const CCPosition enemyPos = enemybase->getPosition();
@@ -109,42 +127,64 @@ void CCBot::OnStep()
 		static float close_y = 1000000;
 		static float dbx = 100000;
 		static float dby = 100000;
-		static CCPosition warpTo;
+		//static CCPosition warpTo;
+		static float max = 100000;
+		static size_t selected;
 		for (size_t index = 0; index != thebases.size(); ++index) {
-			static float distbetween_x;
-			static float distbetween_y;
-			warpTo = thebases[index]->getPosition();
-			if (warpTo.x == enemyPos.x || warpTo.y == enemyPos.y) {
-				distbetween_x = warpTo.x - enemyPos.x;
-				distbetween_y = warpTo.y - enemyPos.y;
-				dbx = warpTo.x - enemyPos.x;
-				dby = warpTo.y - enemyPos.y;
-			} 
-			if (distbetween_x >= 0 || distbetween_x < dbx) {
-				close_x = warpTo.x;
+			if (Util::Dist(thebases[index]->getPosition(), enemyPos) < max && thebases[index]->getPosition().x != enemyPos.x && thebases[index]->getPosition().y != enemyPos.y) {
+				max = Util::Dist(thebases[index]->getPosition(), enemyPos);
+				selected = index;
 			}
-			if (distbetween_y >= 0 || distbetween_y < dby) {
-				close_y = warpTo.y;
-			}
-			
-			//std::cout << "x: " << distbetween_x << "y: " << distbetween_y << std::endl;
 		}
+		warpTo = thebases[selected]->getPosition();
+		warpTobase = thebases[selected];
 
-		// once done find lowest x and y base
+		// Do it once more
 		for (size_t index = 0; index != thebases.size(); ++index) {
-			warpTo = thebases[index]->getPosition();
-			if (warpTo.x == close_x || warpTo.y == close_y) {
-				warpTobase = thebases[index];
-				break;
+			if (Util::Dist(thebases[index]->getPosition(), enemyPos) < max && thebases[index]->getPosition().x != enemyPos.x && thebases[index]->getPosition().y != enemyPos.y) {
+				max = Util::Dist(thebases[index]->getPosition(), enemyPos);
+				selected = index;
 			}
 		}
-		//std::cout << "x: " << enemyPos.x << "y: " << enemyPos.y << std::endl;
+		warpTo = thebases[selected]->getPosition();
+		warpTobase = thebases[selected];
 	}
 
 	if (warpTobase != 0) {
-		std::cout << "x: " << warpTobase->getPosition().x << " y: " << warpTobase->getPosition().y << std::endl;
+		//std::cout << "x: " << warpTobase->getPosition().x << " y: " << warpTobase->getPosition().y << std::endl;
+	}
+	// Get static unit so this only happens once
+	static Unit aProbe = probes[0];
+
+	if (stalkers.size() > 0 && !isPylonBuilt) {
+		aProbe.move(Util::GetTilePosition(warpTo));
+		float isCloseTox = aProbe.getPosition().x - warpTobase->getPosition().x;
+		float isCloseToy = aProbe.getPosition().y - warpTobase->getPosition().y;
+		if (isCloseTox < 1 && isCloseTox > -1 && isCloseToy < 1 && isCloseToy > -1) {
+			aProbe.build(UnitType(sc2::UNIT_TYPEID::PROTOSS_PYLON, *this), Util::GetTilePosition(warpTo));
+
+			// Once its being built upgrade to warpgate
+			for (auto & gates : gateways) {
+				gates.morphWarpGate(gates);
+			}
+		}
+		for (auto & pylon : pylons) {
+			float isCloseTopx = pylon.getPosition().x - warpTobase->getPosition().x;
+			float isCloseTopy = pylon.getPosition().y - warpTobase->getPosition().y;
+			if (isCloseTopx < 1 && isCloseTopx > -1 && isCloseTopy < 1 && isCloseTopy > -1) {
+				isPylonBuilt = true;
+			}
+		}
 	}
 
+	// FORCE UPGRADE THE CYBER CORE
+	static bool hasSearched = false;
+	if (cores.size() > 0 && !hasSearched) {
+		cores[0].upgrade(sc2::UPGRADE_ID::WARPGATERESEARCH);
+	}
+
+	//std::cout << isPylonBuilt << std::endl;
+	 
     m_map.onFrame();
     m_unitInfo.onFrame();
     m_bases.onFrame();

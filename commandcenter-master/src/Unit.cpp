@@ -118,6 +118,14 @@ CCHealth Unit::getEnergy() const
     return m_unit->getEnergy();
 #endif
 }
+void Unit::morphWarpGate(const Unit & target) const
+{
+#ifdef SC2API
+	m_bot->Actions()->UnitCommand(m_unit, 1518, target.getUnitPtr());
+#endif
+}
+
+
 void Unit::chronoBoost(const Unit & target) const 
 {
 #ifdef SC2API
