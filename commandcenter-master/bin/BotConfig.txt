@@ -20,7 +20,7 @@
         "EnemyDifficulty"           : 2,
         "EnemyRace"                 : "Random",
         "MapFile"                   : "CactusValleyLE.SC2Map",
-        "StepSize"                  : 1
+        "StepSize"                  : 10
     },
         
     "Micro" :

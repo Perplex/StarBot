@@ -2,3 +2,6 @@
 commandcenter-master/bin/BotConfig.txt
 commandcenter-master/bin/upgrades.txt
 commandcenter-master/bin/log.txt
+.vs/slnx.sqlite
+commandcenter-master/vs/CommandCenter.vcxproj.user
+commandcenter-master/vs/CommandCenter.vcxproj.user
