@@ -24,6 +24,7 @@ class ProductionManager
     int     getFreeMinerals();
     int     getFreeGas();
 	bool	doneQueue;
+	int		prevSupply;
 
 public:
 

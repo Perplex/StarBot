@@ -316,6 +316,14 @@ int CCBot::GetSupplyRemaining() const
 	return BWAPI::Broodwar->self()->gas();
 #endif
 }
+int CCBot::GetTotalSupply() const
+{
+#ifdef SC2API
+	return Observation()->GetFoodCap();
+#else
+	return BWAPI::Broodwar->self()->gas();
+#endif
+}
 
 Unit CCBot::GetUnit(const CCUnitID & tag) const
 {

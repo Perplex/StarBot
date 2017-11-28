@@ -7,6 +7,7 @@ ProductionManager::ProductionManager(CCBot & bot)
     , m_buildingManager (bot)
     , m_queue           (bot)
 	,doneQueue			(false)
+	,prevSupply			(0)
 {
 
 }
@@ -31,13 +32,20 @@ void ProductionManager::onStart()
 void ProductionManager::onFrame()
 {
     // TODO: if nothing is currently building, get a new goal from the strategy manager
+	if (doneQueue && (m_bot.GetSupplyRemaining() <= 6) && (prevSupply != m_bot.GetTotalSupply())) {
+		prevSupply = m_bot.GetTotalSupply();
+		doneQueue = false;
+		BuildOrder buildOrder;
+		MetaType metaPylon("Pylon", m_bot);
+		buildOrder.add(metaPylon);
+		m_queue.queueAsHighestPriority(buildOrder[0], true);
+	}
 
-	if (m_queue.isEmpty()) {
+	else if (m_queue.isEmpty()) {
 		doneQueue = true;
 		BuildOrder buildOrder;
 		MetaType metaStalker("Stalker", m_bot);
-		std::cout << metaStalker.getUnitType().getName() << " supply needed: " << m_bot.Data(metaStalker.getUnitType()).supplyCost << " supply remaining: " << m_bot.GetSupplyRemaining() << std::endl;
-		
+
 		buildOrder.add(metaStalker);
 		m_queue.queueAsLowestPriority(buildOrder[0], false);
 	}
@@ -81,13 +89,6 @@ void ProductionManager::manageBuildOrderQueue()
         // if we can make the current item
         if (producer.isValid() && canMake)
         {
-			if (doneQueue && (m_bot.GetSupplyRemaining() <= 6)) {
-				BuildOrder buildOrder;
-				std::cout << "pylon added" << std::endl;
-				MetaType metaPylon("Pylon", m_bot);
-				buildOrder.add(metaPylon);
-				m_queue.queueAsHighestPriority(buildOrder[0], true);
-			}
             // create it and remove it from the _queue
             create(producer, currentItem);
             m_queue.removeCurrentHighestPriorityItem();

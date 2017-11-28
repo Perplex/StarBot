@@ -18,9 +18,9 @@
     {
         "BotRace"                   : "Protoss",
         "EnemyDifficulty"           : 8,
-        "EnemyRace"                 : "Random",
+        "EnemyRace"                 : "Protoss",
         "MapFile"                   : "CactusValleyLE.SC2Map",
-        "StepSize"                  : 10
+        "StepSize"                  : 1
     },
         
     "Micro" :
