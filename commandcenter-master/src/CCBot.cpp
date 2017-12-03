@@ -68,6 +68,7 @@ void CCBot::OnStep()
 	std::vector<Unit> stalkers;
 	std::vector<Unit> pylons;
 	std::vector<Unit> cores;
+	std::vector<Unit> warpgates;
 
 	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
@@ -95,6 +96,9 @@ void CCBot::OnStep()
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE) {
 				cores.push_back(unit);
+			}
+			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
+				warpgates.push_back(unit);
 			}
 		}
 	}
@@ -176,6 +180,7 @@ void CCBot::OnStep()
 			float isCloseTopy = pylon.getPosition().y - warpTobase->getPosition().y;
 			if (isCloseTopx < 1 && isCloseTopx > -1 && isCloseTopy < 1 && isCloseTopy > -1) {
 				isPylonBuilt = true;
+				const static bool pylonBuilt = true;
 			}
 		}
 	}
@@ -184,6 +189,8 @@ void CCBot::OnStep()
 	static bool hasSearched = false;
 	if (cores.size() > 0 && !hasSearched) {
 		cores[0].upgrade(sc2::UPGRADE_ID::WARPGATERESEARCH);
+		// set it to true?
+		hasSearched = true;
 	}
 
 	//std::cout << isPylonBuilt << std::endl;
@@ -198,6 +205,13 @@ void CCBot::OnStep()
 			}
 		}
 	}
+
+	// Try to do warpgate shit
+	for (auto & warpg : warpgates) {
+
+		warpg.train(UnitType(sc2::UNIT_TYPEID::PROTOSS_STALKER, *this));
+	}
+
     m_map.onFrame();
     m_unitInfo.onFrame();
     m_bases.onFrame();

@@ -60,6 +60,8 @@ int main(int argc, char* argv[])
     // Add the custom bot, it will control the players.
     CCBot bot;
 
+	static bool isPylonBuilt = false;
+
     
     // WARNING: Bot logic has not been thorougly tested on step sizes > 1
     //          Setting this = N means the bot's onFrame gets called once every N frames

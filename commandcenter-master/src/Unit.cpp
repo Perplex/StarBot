@@ -407,9 +407,22 @@ void Unit::train(const UnitType & type) const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
+	std::vector<Unit> aList;
+	for (auto & aUnit : m_bot->GetUnits()) {
+		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PYLON) {
+			aList.push_back(aUnit);
+		}
+	}
+	//sc2::Point2D aPoint(aList[0].getPosition());
+	for (auto & aUnit : m_bot->GetUnits()) {
+		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
+			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
+		}
+	}
 	if (type.getName() == "Stalker") {
 		//TODO get pylon location
 		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility, );
+		std::cout << "Here" << std::endl;
 	}
     m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
 #else
