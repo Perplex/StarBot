@@ -167,6 +167,17 @@ void BuildingManager::constructAssignedBuildings()
             {
                 // TODO: in here is where we would check to see if the builder died on the way
                 //       or if things are taking too long, or the build location is no longer valid
+
+				//I think this code will work -- Greg
+				//It checks if the builder is in units
+				if (!(std::find(m_bot.GetUnits().begin(), m_bot.GetUnits().end(), builderUnit) != m_bot.GetUnits().end())) {
+					Unit builderUnit = m_bot.Workers().getBuilder(b);
+					b.builderUnit = builderUnit;
+					if (!b.builderUnit.isValid())
+					{
+						continue;
+					}
+				}
             }
             else
             {

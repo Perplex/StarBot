@@ -72,7 +72,7 @@ void ProductionManager::createNewBase() {
 	MetaType metaAssimilator("Assimilator", m_bot);
 	buildOrder.add(metaNexus);
 	m_queue.queueAsHighestPriority(buildOrder[0], true);
-	int n = 16;
+	/*int n = 16;
 	for (int i = 1; i <= n; ++i) {
 		buildOrder.add(metaProbe);
 		m_queue.queueAsLowestPriority(buildOrder[i], false);
@@ -82,7 +82,7 @@ void ProductionManager::createNewBase() {
 			++n;
 			m_queue.queueAsLowestPriority(buildOrder[i], false);
 		}
-	}
+	}*/
 }
 void ProductionManager::manageBuildOrderQueue()
 {
