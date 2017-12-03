@@ -70,16 +70,22 @@ void ProductionManager::createNewBase() {
 	MetaType metaNexus("Nexus", m_bot);
 	MetaType metaProbe("Probe", m_bot);
 	MetaType metaAssimilator("Assimilator", m_bot);
+	MetaType metaStalker("Stalker", m_bot);
 	buildOrder.add(metaNexus);
 	m_queue.queueAsHighestPriority(buildOrder[0], true);
-	int n = 6;
-	for (int i = 1; i <= n; ++i) {
+	buildOrder.add(metaAssimilator);
+	m_queue.queueAsLowestPriority(buildOrder[1], false);
+	int n = 7;
+	for (int i = 2; i <= n; ++i) {
 		buildOrder.add(metaProbe);
+		buildOrder.add(metaStalker);
 		m_queue.queueAsLowestPriority(buildOrder[i], false);
-		if ((i == 3) || (i == 5)) {
+		++i;
+		++n;
+		m_queue.queueAsLowestPriority(buildOrder[i], true);
+		if (i == n) {
 			buildOrder.add(metaAssimilator);
 			++i;
-			++n;
 			m_queue.queueAsLowestPriority(buildOrder[i], false);
 		}
 	}
