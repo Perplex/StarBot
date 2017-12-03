@@ -46,5 +46,4 @@ public:
 
     void onUnitCreate(const Unit & unit);
     void onUnitDestroy(const Unit & unit);
-	void populateBase();
 };

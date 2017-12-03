@@ -31,10 +31,6 @@ void GameCommander::onFrame()
 
     drawDebugInterface();
 }
-
-void GameCommander::populateBase() {
-	m_productionManager.populateNewBase();
-}
 void GameCommander::drawDebugInterface()
 {
     drawGameInformation(4, 1);

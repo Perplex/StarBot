@@ -302,9 +302,6 @@ WorkerManager & CCBot::Workers()
 {
     return m_workers;
 }
-void CCBot::populateBase() {
-	m_gameCommander.populateBase();
-}
 int CCBot::GetMinerals() const
 {
 #ifdef SC2API

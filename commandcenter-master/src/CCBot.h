@@ -72,5 +72,4 @@ public:
     Unit GetUnit(const CCUnitID & tag) const;
     const std::vector<Unit> & GetUnits() const;
     const std::vector<CCPosition> & GetStartLocations() const;
-	void populateBase();
 };

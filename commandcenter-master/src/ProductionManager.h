@@ -35,7 +35,6 @@ public:
     void    onUnitDestroy(const Unit & unit);
     void    drawProductionInformation();
 	void	createNewBase();
-	void	populateNewBase();
 
     Unit getProducer(const MetaType & type, CCPosition closestTo = CCPosition(0, 0));
 };
