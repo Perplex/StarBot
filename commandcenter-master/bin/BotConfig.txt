@@ -17,7 +17,7 @@
     "SC2API" :
     {
         "BotRace"                   : "Protoss",
-        "EnemyDifficulty"           : 1,
+        "EnemyDifficulty"           : 4,
         "EnemyRace"                 : "Protoss",
         "MapFile"                   : "CactusValleyLE.SC2Map",
         "StepSize"                  : 10

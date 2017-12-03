@@ -305,8 +305,15 @@ void BuildingManager::checkForCompletedBuildings()
             {
                 m_bot.Workers().finishedWithWorker(b.builderUnit);
             }
-			std::cout << "name " << b.type.getName() << std::endl;
-
+			if (b.type.getName() == "PROTOSS_NEXUS") {
+				UnitType probe = UnitType::GetUnitTypeFromName("Probe", m_bot);
+				int n = 25;
+				for (int i = 0; i < n; ++i) {
+					b.buildingUnit.train(probe);
+				}
+				//b.buildingUnit.train(probe);
+				//m_bot.populateBase();
+			}
             // remove this unit from the under construction vector
             toRemove.push_back(b);
         }

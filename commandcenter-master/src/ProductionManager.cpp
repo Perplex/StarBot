@@ -74,19 +74,11 @@ void ProductionManager::createNewBase() {
 }
 void ProductionManager::populateNewBase() {
 	BuildOrder buildOrder;
-	MetaType metaProbe("Probe", m_bot);
 	MetaType metaAssimilator("Assimilator", m_bot);
-	int n = 16;
-	for (int i = 0; i < n; ++i) {
-		buildOrder.add(metaProbe);
-		m_queue.queueAsLowestPriority(buildOrder[i], false);
-		if ((i == 6) || (i == 12)) {
-		buildOrder.add(metaAssimilator);
-			++i;
-			++n;
-			m_queue.queueAsLowestPriority(buildOrder[i], false);
-		}
-	}
+
+	buildOrder.add(metaAssimilator);
+	m_queue.queueAsLowestPriority(buildOrder[0], false);
+	m_queue.queueAsLowestPriority(buildOrder[0], false);
 }
 void ProductionManager::manageBuildOrderQueue()
 {
