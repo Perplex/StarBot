@@ -408,15 +408,32 @@ void Unit::train(const UnitType & type) const
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
 	std::vector<Unit> aList;
+	const static CCPosition mybase = m_bot->GetStartLocation();
 	for (auto & aUnit : m_bot->GetUnits()) {
 		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PYLON) {
 			aList.push_back(aUnit);
 		}
 	}
+
+	float max = 0;
+	
+	for (auto & pylon : aList) {
+		if (max < Util::Dist(mybase, pylon.getPosition())) {
+			max = Util::Dist(mybase, pylon.getPosition());
+		}
+	}
 	//sc2::Point2D aPoint(aList[0].getPosition());
 	for (auto & aUnit : m_bot->GetUnits()) {
 		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
-			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
+			//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
+
+			float aListx = aList[0].getPosition().x + 3;
+			float aListy = aList[0].getPosition().y + 3;
+
+			//m_bot->Map.Actions
+			std::cout << aListx << " : " << aListy << std::endl;
+			//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
+			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(aListx, aListy)); //(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
 		}
 	}
 	if (type.getName() == "Stalker") {
