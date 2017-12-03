@@ -305,6 +305,7 @@ void BuildingManager::checkForCompletedBuildings()
             {
                 m_bot.Workers().finishedWithWorker(b.builderUnit);
             }
+			std::cout << "name " << b.type.getName() << std::endl;
 
             // remove this unit from the under construction vector
             toRemove.push_back(b);

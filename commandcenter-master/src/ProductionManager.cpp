@@ -68,21 +68,25 @@ void ProductionManager::onUnitDestroy(const Unit & unit)
 void ProductionManager::createNewBase() {
 	BuildOrder buildOrder;
 	MetaType metaNexus("Nexus", m_bot);
-	MetaType metaProbe("Probe", m_bot);
-	MetaType metaAssimilator("Assimilator", m_bot);
+
 	buildOrder.add(metaNexus);
 	m_queue.queueAsHighestPriority(buildOrder[0], true);
-	/*int n = 16;
-	for (int i = 1; i <= n; ++i) {
+}
+void ProductionManager::populateNewBase() {
+	BuildOrder buildOrder;
+	MetaType metaProbe("Probe", m_bot);
+	MetaType metaAssimilator("Assimilator", m_bot);
+	int n = 16;
+	for (int i = 0; i < n; ++i) {
 		buildOrder.add(metaProbe);
 		m_queue.queueAsLowestPriority(buildOrder[i], false);
 		if ((i == 6) || (i == 12)) {
-			buildOrder.add(metaAssimilator);
+		buildOrder.add(metaAssimilator);
 			++i;
 			++n;
 			m_queue.queueAsLowestPriority(buildOrder[i], false);
 		}
-	}*/
+	}
 }
 void ProductionManager::manageBuildOrderQueue()
 {
