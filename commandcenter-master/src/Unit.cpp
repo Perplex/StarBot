@@ -439,8 +439,8 @@ void Unit::train(const UnitType & type) const
 	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
 		//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
 		if (warping) {
-			selected.x +1;
-			selected.y +1;
+			selected.x;
+			selected.y;
 		}
 		warping = true;
 
@@ -454,7 +454,7 @@ void Unit::train(const UnitType & type) const
 		*/
 
 		//m_bot->Map().
-		/*
+		
 		for (auto & xFloat : xList) {
 			for (auto & yFloat : yList) {
 				if (m_bot->Query()->Placement(m_bot->Data(type).warpAbility, CCPosition(selected.x + xFloat, selected.y + yFloat))) {
@@ -464,7 +464,7 @@ void Unit::train(const UnitType & type) const
 				}
 			}
 		}
-		*/
+		
 		//Util::Ds
 		//std::cout << aListx << " : " << aListy << std::endl;
 		//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
