@@ -1,5 +1,6 @@
 #include "Unit.h"
 #include "CCBot.h"
+#include <algorithm>
 
 Unit::Unit()
     : m_bot(nullptr)
@@ -420,8 +421,8 @@ void Unit::train(const UnitType & type) const
 		float max = 0;
 		const static BaseLocation *eBase = m_bot->Bases().getPlayerStartingBaseLocation(Players::Enemy);
 		for (auto & pylon : aList) {
-			if (max < Util::DistSq(pylon.getPosition(), mybase)) {
-				max = Util::DistSq(pylon.getPosition(), mybase);
+			if (max < Util::DistSq(mybase, pylon.getPosition())) {
+				max = Util::DistSq(mybase, pylon.getPosition());
 				selected = pylon.getPosition();
 			}
 		}
