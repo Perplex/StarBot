@@ -60,7 +60,7 @@ void RangedManager::assignTargets(const std::vector<Unit> & targets)
 										break;
 									}
 								}
-								if (!pass && Util::Dist(target, CCPosition((float)tiles.x, (float)tiles.y)) > distToEnemy + 3) {
+								if (!pass && Util::Dist(target, CCPosition((float)tiles.x, (float)tiles.y)) > distToEnemy + 5) {
 									rangedUnit.move(tiles);
 									break;
 								}
