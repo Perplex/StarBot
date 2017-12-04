@@ -414,26 +414,34 @@ void Unit::train(const UnitType & type) const
 			aList.push_back(aUnit);
 		}
 	}
-
-	float max = 0;
-	
-	for (auto & pylon : aList) {
-		if (max < Util::Dist(mybase, pylon.getPosition())) {
-			max = Util::Dist(mybase, pylon.getPosition());
+	static CCPosition selected;
+	static bool warping = false;
+	if (warping) {
+		float max = 0;
+		const static BaseLocation *eBase = m_bot->Bases().getPlayerStartingBaseLocation(Players::Enemy);
+		for (auto & pylon : aList) {
+			if (max < Util::DistSq(pylon.getPosition(), mybase)) {
+				max = Util::DistSq(pylon.getPosition(), mybase);
+				selected = pylon.getPosition();
+			}
 		}
 	}
 	//sc2::Point2D aPoint(aList[0].getPosition());
 	for (auto & aUnit : m_bot->GetUnits()) {
 		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
 			//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
+			if (warping) {
+				selected.x += 2;
+				selected.y += 2;
+			}
+			warping = true;
 
-			float aListx = aList[0].getPosition().x + 3;
-			float aListy = aList[0].getPosition().y + 3;
-
-			//m_bot->Map.Actions
-			std::cout << aListx << " : " << aListy << std::endl;
+			//Util::Ds
+			//std::cout << aListx << " : " << aListy << std::endl;
 			//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
-			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(aListx, aListy)); //(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
+			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y));
+			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y-4));
+			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(selected.x-4, selected.y-4));//(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
 		}
 	}
 	if (type.getName() == "Stalker") {
