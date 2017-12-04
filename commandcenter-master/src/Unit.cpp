@@ -427,23 +427,25 @@ void Unit::train(const UnitType & type) const
 		}
 	}
 	//sc2::Point2D aPoint(aList[0].getPosition());
-	for (auto & aUnit : m_bot->GetUnits()) {
-		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
-			//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
-			if (warping) {
-				selected.x += 2;
-				selected.y += 2;
-			}
-			warping = true;
-
-			//Util::Ds
-			//std::cout << aListx << " : " << aListy << std::endl;
-			//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
-			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y));
-			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y-4));
-			m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility, sc2::Point2D(selected.x-4, selected.y-4));//(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
+	//for (auto & aUnit : m_bot->GetUnits()) {
+	std::cout << m_unit->unit_type << std::endl;
+	
+	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
+		//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
+		if (warping) {
+			selected.x += 2;
+			selected.y += 2;
 		}
+		warping = true;
+
+		//Util::Ds
+		//std::cout << aListx << " : " << aListy << std::endl;
+		//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
+		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y));
+		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y-4));
+		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x-4, selected.y-4));//(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
 	}
+	//}
 	if (type.getName() == "Stalker") {
 		//TODO get pylon location
 		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility, );
