@@ -363,7 +363,17 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
     return Unit(BWAPI::Broodwar->getUnit(tag), *(CCBot *)this);
 #endif
 }
-
+const CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) const {
+	auto & closest = m_map.getClosestTilesTo(position);
+	for (auto & tile : closest) {
+		if (m_map.isPowered(tile.x, tile.y)) {
+			if (m_map.isBuildable(tile)) {
+				return tile;
+			}
+		}
+	}
+	return position;
+}
 const std::vector<Unit> & CCBot::GetUnits() const
 {
     return m_allUnits;

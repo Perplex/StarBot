@@ -422,19 +422,7 @@ void Unit::train(const UnitType & type) const
 	}
 	static CCPosition selected;
 	static bool warping = false;
-	if (warping) {
-		float max = 0;
-		const static BaseLocation *eBase = m_bot->Bases().getPlayerStartingBaseLocation(Players::Enemy);
-		for (auto & pylon : aList) {
-			if (max < Util::DistSq(mybase, pylon.getPosition())) {
-				max = Util::DistSq(mybase, pylon.getPosition());
-				selected = pylon.getPosition();
-			}
-		}
-	}
-	//sc2::Point2D aPoint(aList[0].getPosition());
-	//for (auto & aUnit : m_bot->GetUnits()) {
-	//std::cout << m_unit->unit_type << std::endl;
+
 
 	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
 		//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
@@ -444,6 +432,18 @@ void Unit::train(const UnitType & type) const
 		}
 		warping = true;
 
+		if (warping) {
+			float max = 0;
+			const static BaseLocation *eBase = m_bot->Bases().getPlayerStartingBaseLocation(Players::Enemy);
+			for (auto & pylon : aList) {
+				if (max < Util::DistSq(mybase, pylon.getPosition())) {
+					max = Util::DistSq(mybase, pylon.getPosition());
+					selected = pylon.getPosition();
+				}
+			}
+		}
+		CCTilePosition tile(selected.x, selected.y);
+		CCTilePosition spawnTile = m_bot->GetWalkableTile(tile);
 		/*
 		std::random_shuffle(xList.begin(), xList.end());
 		std::random_shuffle(yList.begin(), yList.end());
@@ -452,33 +452,45 @@ void Unit::train(const UnitType & type) const
 			selected.y += yList[0];
 		}
 		*/
+		
 
 		//m_bot->Map().
-		
-		for (auto & xFloat : xList) {
+		UnitType pylon = UnitType::GetUnitTypeFromName("Pylon", *m_bot);
+		/*for (float xFloat = 0;) {
 			for (auto & yFloat : yList) {
-				if (m_bot->Query()->Placement(m_bot->Data(type).warpAbility, CCPosition(selected.x + xFloat, selected.y + yFloat))) {
+				if (m_bot->Query()->Placement(m_bot->Data(pylon).buildAbility, CCPosition(selected.x + xFloat, selected.y + yFloat))) {
 					selected.x += xFloat;
 					selected.y += yFloat;
 					break;
 				}
+				std::cout << "(" << selected.x << ", " << selected.y << ")" << std::endl;
 			}
-		}
+		}*/
+		
+		/*while (1) {
+			float xFloat = selected.x + 3 * cos(rand());
+			float yFloat = selected.y + 3 * sin(rand());
+			if (m_bot->Query()->Placement(m_bot->Data(pylon).buildAbility, CCPosition(selected.x + xFloat, selected.y + yFloat))) {
+				std::cout << "worked" << std::endl;
+				selected.x += xFloat;
+				selected.y += yFloat;
+				break;
+			}
+			std::cout << "(" << selected.x << ", " << selected.y << ")" << std::endl;
+			std::cout << "flaot s(" << xFloat << ", " << yFloat << ")" << std::endl;
+		}*/
 		
 		//Util::Ds
 		//std::cout << aListx << " : " << aListy << std::endl;
 		//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
-		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y));
+		
+		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(spawnTile.x, spawnTile.y));
 		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y-4));
 		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x-4, selected.y-4));//(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
 	}
-	//}
-	if (type.getName() == "Stalker") {
-		//TODO get pylon location
-		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility, );
-		std::cout << "Here" << std::endl;
+	else {
+		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
 	}
-    m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
 #else
     m_unit->train(type.getAPIUnitType());
 #endif
