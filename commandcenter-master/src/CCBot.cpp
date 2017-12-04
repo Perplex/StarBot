@@ -70,6 +70,7 @@ void CCBot::OnStep()
 	std::vector<Unit> cores;
 	std::vector<Unit> warpgates;
 
+	stalkers.clear();
 	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
 		if (unit.getPlayer() == Players::Self) {
@@ -161,9 +162,13 @@ void CCBot::OnStep()
 	// Get static unit so this only happens once
 	static Unit aProbe = probes[0];
 
+	//stalkers.size;
+
 	for (auto & gates : gateways) {
 
-		gates.morphWarpGate(gates);
+		if (stalkers.size() > 11) {
+			gates.morphWarpGate(gates);
+		}
 	}
 	if (stalkers.size() > 0 && !isPylonBuilt) {
 		aProbe.move(Util::GetTilePosition(warpTo));

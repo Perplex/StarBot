@@ -409,7 +409,12 @@ void Unit::train(const UnitType & type) const
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
 	std::vector<Unit> aList;
+	std::vector<Unit> stalkers;
+	std::vector<float> xList = { 0,1,2,3,4 };
+	std::vector<float> yList = { 0,1,2,3,4 };
 	const static CCPosition mybase = m_bot->GetStartLocation();
+	aList.clear();
+
 	for (auto & aUnit : m_bot->GetUnits()) {
 		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PYLON) {
 			aList.push_back(aUnit);
@@ -429,22 +434,43 @@ void Unit::train(const UnitType & type) const
 	}
 	//sc2::Point2D aPoint(aList[0].getPosition());
 	//for (auto & aUnit : m_bot->GetUnits()) {
-	std::cout << m_unit->unit_type << std::endl;
-	
+	//std::cout << m_unit->unit_type << std::endl;
+
 	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
 		//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
 		if (warping) {
-			selected.x += 2;
-			selected.y += 2;
+			selected.x +1;
+			selected.y +1;
 		}
 		warping = true;
 
+		/*
+		std::random_shuffle(xList.begin(), xList.end());
+		std::random_shuffle(yList.begin(), yList.end());
+		if (m_bot->Map().canBuildTypeAtPosition(int(xList[0]), int(yList[0]), type)) {
+			selected.x += xList[0];
+			selected.y += yList[0];
+		}
+		*/
+
+		//m_bot->Map().
+		/*
+		for (auto & xFloat : xList) {
+			for (auto & yFloat : yList) {
+				if (m_bot->Query()->Placement(m_bot->Data(type).warpAbility, CCPosition(selected.x + xFloat, selected.y + yFloat))) {
+					selected.x += xFloat;
+					selected.y += yFloat;
+					break;
+				}
+			}
+		}
+		*/
 		//Util::Ds
 		//std::cout << aListx << " : " << aListy << std::endl;
 		//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
 		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y));
-		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y-4));
-		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x-4, selected.y-4));//(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
+		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y-4));
+		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x-4, selected.y-4));//(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
 	}
 	//}
 	if (type.getName() == "Stalker") {
