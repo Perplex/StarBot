@@ -218,12 +218,12 @@ void CCBot::OnStep()
 	}
 
 	// Try to do warpgate shit
-	for (auto & warpg : warpgates) {
+	/*for (auto & warpg : warpgates) {
 		if (warpg.getPlayer() == Players::Self) {
 			warpg.train(UnitType(sc2::UNIT_TYPEID::PROTOSS_STALKER, *this));
 		}
 
-	}
+	}*/
 
     m_map.onFrame();
     m_unitInfo.onFrame();

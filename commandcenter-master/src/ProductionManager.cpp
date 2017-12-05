@@ -108,10 +108,10 @@ void ProductionManager::manageBuildOrderQueue()
     {
         // this is the unit which can produce the currentItem
 		Unit producer = getProducer(currentItem.type);
-
+		
         // check to see if we can make it right now
         bool canMake = canMakeNow(producer, currentItem.type);
-
+		std::cout << producer.getType().getName() << " check " << canMake << std::endl;
         // TODO: if it's a building and we can't make it yet, predict the worker movement to the location
 
         // if we can make the current item
@@ -128,7 +128,7 @@ void ProductionManager::manageBuildOrderQueue()
         // otherwise, if we can skip the current item
         else if (m_queue.canSkipItem())
         {
-			std::cout << producer.getType().getName() << " failed" << std::endl;
+			//std::cout << producer.getType().getName() << " failed" << std::endl;
             // skip it
             m_queue.skipItem();
 
@@ -137,7 +137,7 @@ void ProductionManager::manageBuildOrderQueue()
         }
         else
         {
-			std::cout << producer.getType().getName() << " failed" << std::endl;
+			//std::cout << producer.getType().getName() << " failed" << std::endl;
             // so break out
             break;
         }
