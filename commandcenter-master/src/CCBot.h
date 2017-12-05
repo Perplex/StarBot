@@ -29,6 +29,7 @@ class CCBot
     TechTree                m_techTree;
     GameCommander           m_gameCommander;
 	bool					expanded;
+	int						run;
 
     std::vector<Unit>       m_allUnits;
     std::vector<CCPosition> m_baseLocations;
@@ -72,5 +73,5 @@ public:
     Unit GetUnit(const CCUnitID & tag) const;
     const std::vector<Unit> & GetUnits() const;
     const std::vector<CCPosition> & GetStartLocations() const;
-	const CCTilePosition & GetWalkableTile(const CCTilePosition & position) const;
+	const CCTilePosition & GetWalkableTile(const CCTilePosition & position);
 };

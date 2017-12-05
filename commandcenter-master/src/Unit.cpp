@@ -442,51 +442,11 @@ void Unit::train(const UnitType & type) const
 				}
 			}
 		}
-		CCTilePosition tile(selected.x, selected.y);
+		CCTilePosition tile((int)selected.x, (int)selected.y);
 		CCTilePosition spawnTile = m_bot->GetWalkableTile(tile);
-		/*
-		std::random_shuffle(xList.begin(), xList.end());
-		std::random_shuffle(yList.begin(), yList.end());
-		if (m_bot->Map().canBuildTypeAtPosition(int(xList[0]), int(yList[0]), type)) {
-			selected.x += xList[0];
-			selected.y += yList[0];
-		}
-		*/
 		
-
-		//m_bot->Map().
-		UnitType pylon = UnitType::GetUnitTypeFromName("Pylon", *m_bot);
-		/*for (float xFloat = 0;) {
-			for (auto & yFloat : yList) {
-				if (m_bot->Query()->Placement(m_bot->Data(pylon).buildAbility, CCPosition(selected.x + xFloat, selected.y + yFloat))) {
-					selected.x += xFloat;
-					selected.y += yFloat;
-					break;
-				}
-				std::cout << "(" << selected.x << ", " << selected.y << ")" << std::endl;
-			}
-		}*/
+		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D((float)spawnTile.x, (float)spawnTile.y));
 		
-		/*while (1) {
-			float xFloat = selected.x + 3 * cos(rand());
-			float yFloat = selected.y + 3 * sin(rand());
-			if (m_bot->Query()->Placement(m_bot->Data(pylon).buildAbility, CCPosition(selected.x + xFloat, selected.y + yFloat))) {
-				std::cout << "worked" << std::endl;
-				selected.x += xFloat;
-				selected.y += yFloat;
-				break;
-			}
-			std::cout << "(" << selected.x << ", " << selected.y << ")" << std::endl;
-			std::cout << "flaot s(" << xFloat << ", " << yFloat << ")" << std::endl;
-		}*/
-		
-		//Util::Ds
-		//std::cout << aListx << " : " << aListy << std::endl;
-		//m_bot->Actions()->UnitCommand(aUnit.getUnitPtr(), m_bot->Data(type).warpAbility.IsValid, sc2::Point2D(aListx, aListy);)
-		
-		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(spawnTile.x, spawnTile.y));
-		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x, selected.y-4));
-		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D(selected.x-4, selected.y-4));//(sc2::ABILITY_ID::TRAINWARP_STALKER, sc2::Point2D(aList[0].getPosition()));
 	}
 	else {
 		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);

@@ -2,16 +2,16 @@
 #include "Util.h"
 
 CCBot::CCBot()
-    : m_map(*this)
-    , m_bases(*this)
-    , m_unitInfo(*this)
-    , m_workers(*this)
-    , m_gameCommander(*this)
-    , m_strategy(*this)
-    , m_techTree(*this)
+	: m_map(*this)
+	, m_bases(*this)
+	, m_unitInfo(*this)
+	, m_workers(*this)
+	, m_gameCommander(*this)
+	, m_strategy(*this)
+	, m_techTree(*this)
 	, expanded(false)
 {
-    
+	run = 0;
 }
 
 void CCBot::OnGameStart() 
@@ -363,15 +363,24 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
     return Unit(BWAPI::Broodwar->getUnit(tag), *(CCBot *)this);
 #endif
 }
-const CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) const {
+const CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
 	auto & closest = m_map.getClosestTilesTo(position);
-	for (auto & tile : closest) {
+	for (int i = 0; i < closest.size(); ++i) {
+		if (run >= 3) {
+			run = 0;
+		}
+		if (i <= run) {
+			continue;
+		}
+		auto & tile = closest[i];
 		if (m_map.isPowered(tile.x, tile.y)) {
-			if (m_map.isBuildable(tile)) {
+			if (m_map.isWalkable(tile)) {
+				++run;
 				return tile;
 			}
 		}
 	}
+	std::cout << "couldnt find a postition" << std::endl;
 	return position;
 }
 const std::vector<Unit> & CCBot::GetUnits() const
