@@ -118,6 +118,7 @@ void ProductionManager::manageBuildOrderQueue()
         if (producer.isValid() && canMake)
         {
             // create it and remove it from the _queue
+			std::cout << producer.getType().getName() << " worked" << std::endl;
             create(producer, currentItem);
             m_queue.removeCurrentHighestPriorityItem();
 
@@ -127,6 +128,7 @@ void ProductionManager::manageBuildOrderQueue()
         // otherwise, if we can skip the current item
         else if (m_queue.canSkipItem())
         {
+			std::cout << producer.getType().getName() << " failed" << std::endl;
             // skip it
             m_queue.skipItem();
 
@@ -135,6 +137,7 @@ void ProductionManager::manageBuildOrderQueue()
         }
         else
         {
+			std::cout << producer.getType().getName() << " failed" << std::endl;
             // so break out
             break;
         }
@@ -145,7 +148,7 @@ Unit ProductionManager::getProducer(const MetaType & type, CCPosition closestTo)
 {
     // get all the types of units that cna build this type
     std::vector<UnitType> producerTypes = m_bot.Data(type).whatBuilds;
-	if ((type.getName() == "Gateway")) {
+	if ((type.getName() == "Stalker")) {
 		producerTypes.push_back(UnitType(sc2::UNIT_TYPEID::PROTOSS_WARPGATE, m_bot));
 	}
 

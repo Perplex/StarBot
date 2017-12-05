@@ -212,10 +212,10 @@ void CCBot::OnStep()
 	}
 
 	// Try to do warpgate shit
-	/*for (auto & warpg : warpgates) {
+	for (auto & warpg : warpgates) {
 
 		warpg.train(UnitType(sc2::UNIT_TYPEID::PROTOSS_STALKER, *this));
-	}*/
+	}
 
     m_map.onFrame();
     m_unitInfo.onFrame();
@@ -363,16 +363,18 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
     return Unit(BWAPI::Broodwar->getUnit(tag), *(CCBot *)this);
 #endif
 }
-const CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
+CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
 	auto & closest = m_map.getClosestTilesTo(position);
+	CCTilePosition tileOld = CCTilePosition(0,0);
 	for (int i = 0; i < closest.size(); ++i) {
 		if (run >= 3) {
 			run = 0;
 		}
 
-		auto & tile = closest[i];
+		CCTilePosition tile = closest[i];
 		if (m_map.isPowered(tile.x, tile.y)) {
 			if (m_map.isWalkable(tile)) {
+				tileOld = tile;
 				if (i <= run) {
 					continue;
 				}
@@ -382,7 +384,7 @@ const CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
 		}
 	}
 	std::cout << "couldnt find a postition" << std::endl;
-	return position;
+	return tileOld;
 }
 const std::vector<Unit> & CCBot::GetUnits() const
 {
