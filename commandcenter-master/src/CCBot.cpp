@@ -358,7 +358,6 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
 CCTilePosition CCBot::GetWalkableTile() {
 	auto closest = enemybase->getClosestTiles();
 	CCTilePosition tileOld = CCTilePosition(0,0);
-	std::cout << closest.size() << " closest" << std::endl;
 	for (int i = 0; i < closest.size(); ++i) {
 		if (run >= 4) {
 			run = 0;
@@ -372,7 +371,6 @@ CCTilePosition CCBot::GetWalkableTile() {
 					//std::cout << "running" << std::endl;
 					continue;
 				}
-				std::cout << run << std::endl;
 				run += 1;
 				i += 1;
 				prevTile = tile;
