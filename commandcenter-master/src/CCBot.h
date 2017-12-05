@@ -48,7 +48,6 @@ public:
 #ifdef SC2API
     void OnGameStart() override;
     void OnStep() override;
-	void OnGameEnd() override;
 #else
     void OnGameStart();
     void OnStep();
@@ -75,5 +74,4 @@ public:
     const std::vector<Unit> & GetUnits() const;
     const std::vector<CCPosition> & GetStartLocations() const;
 	CCTilePosition & GetWalkableTile(const CCTilePosition & position);
-
 };

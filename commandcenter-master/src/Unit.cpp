@@ -119,7 +119,7 @@ CCHealth Unit::getEnergy() const
     return m_unit->getEnergy();
 #endif
 }
-void Unit::morphWarpGate() const
+void Unit::morphWarpGate(const Unit & target) const
 {
 #ifdef SC2API
 	m_bot->Actions()->UnitCommand(m_unit, 1518);
@@ -406,73 +406,51 @@ void Unit::buildTarget(const UnitType & buildingType, const Unit & target) const
 
 void Unit::train(const UnitType & type) const
 {
-	BOT_ASSERT(isValid(), "Unit is not valid");
+    BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
+	std::vector<Unit> aList;
+	std::vector<Unit> stalkers;
+	std::vector<float> xList = { 0,1,2,3,4 };
+	std::vector<float> yList = { 0,1,2,3,4 };
+	const static CCPosition mybase = m_bot->GetStartLocation();
+	aList.clear();
 
-	if (type.is(sc2::UNIT_TYPEID::PROTOSS_STALKER) && m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
-		float furthest = 0;
-		Unit create;
-		for (auto unit : m_bot->GetUnits()) {
-			if (unit.getPlayer() == Players::Self && unit.getType().is(sc2::UNIT_TYPEID::PROTOSS_PYLON)) {
-				float temp = Util::Dist(m_unit->pos, unit.getPosition());
-				if (temp > furthest) {
-					furthest = temp;
-					create = unit;
+	for (auto & aUnit : m_bot->GetUnits()) {
+		if (aUnit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PYLON) {
+			aList.push_back(aUnit);
+		}
+	}
+	static CCPosition selected;
+	static bool warping = false;
+
+
+	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
+		//std::cout << m_bot->Data(type).warpAbility.to_string << std::endl;
+		if (warping) {
+			selected.x;
+			selected.y;
+		}
+		warping = true;
+
+		if (warping) {
+			float max = 0;
+			const static BaseLocation *eBase = m_bot->Bases().getPlayerStartingBaseLocation(Players::Enemy);
+			for (auto & pylon : aList) {
+				if (max < Util::DistSq(mybase, pylon.getPosition())) {
+					max = Util::DistSq(mybase, pylon.getPosition());
+					selected = pylon.getPosition();
 				}
 			}
 		}
-
-		std::vector <sc2::Point2D> possible;
-
-		float xCenter = create.getPosition().x, yCenter = create.getPosition().y;
-		for (int x =  xCenter- 7; x <= xCenter; x++) {
-			for (int y = yCenter - 7; y <= yCenter; y++) {
-				if ((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter) <= 49) {
-					bool valid[4] = {true, true, true, true};
-					float xSym = xCenter - (x - xCenter);
-					float ySym = yCenter - (y - yCenter);
-					for (auto unit : m_bot->GetUnits()) {
-						CCPosition temp = unit.getPosition();
-						if (temp == CCPosition(x, y) || !m_bot->Map().isWalkable(x, y)) {
-							valid[0] = false;;
-						}
-						if (temp == CCPosition(xSym, y) || !m_bot->Map().isWalkable(xSym, y)) {
-							valid[1] = false;
-						}
-						if (temp == CCPosition(x, ySym) || !m_bot->Map().isWalkable(x, ySym)) {
-							valid[2] = false;
-						}
-						if (temp == CCPosition(xSym, ySym) || !m_bot->Map().isWalkable(xSym, ySym)) {
-							valid[3] = false;
-						}
-					}
-					
-					if (valid[0]) {
-						possible.push_back(sc2::Point2D(CCPosition(x, y)));
-					}
-					if (valid[1]) {
-						possible.push_back(sc2::Point2D(CCPosition(xSym, y)));
-					}
-					if (valid[2]) {
-						possible.push_back(sc2::Point2D(CCPosition(x, ySym)));
-					}
-					if (valid[3]) {
-						possible.push_back(sc2::Point2D(CCPosition(xSym, ySym)));
-					}				
-				}
-			}
-		}
-		for (auto pos : possible) {
-			m_bot->Actions()->UnitCommand(m_unit, 1414, pos);
-			if (m_bot->GetUnit(m_unit->tag).isTraining()) {
-				break;
-			}
-		}
+		CCTilePosition tile((int)selected.x, (int)selected.y);
+		CCTilePosition spawnTile = m_bot->GetWalkableTile(tile);
+		
+		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).warpAbility, sc2::Point2D((float)spawnTile.x, (float)spawnTile.y));
+		
 	}
 	else {
 		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
 	}
-	
 #else
     m_unit->train(type.getAPIUnitType());
 #endif
