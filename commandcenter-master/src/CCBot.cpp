@@ -10,6 +10,7 @@ CCBot::CCBot()
 	, m_strategy(*this)
 	, m_techTree(*this)
 	, expanded(false)
+	, prevTile(0,0)
 {
 	run = 0;
 }
@@ -201,11 +202,11 @@ void CCBot::OnStep()
 	}
 
 	// Try to do warpgate shit
-	for (auto & warpg : warpgates) {
+	/*for (auto & warpg : warpgates) {
 		if (warpg.getPlayer() == Players::Self) {
 			warpg.train(UnitType(sc2::UNIT_TYPEID::PROTOSS_STALKER, *this));
 		}
-	}
+	}*/
 
 	m_map.onFrame();
 	m_unitInfo.onFrame();
@@ -359,12 +360,12 @@ CCTilePosition CCBot::GetWalkableTile() {
 	CCTilePosition tileOld = CCTilePosition(0,0);
 	std::cout << closest.size() << " closest" << std::endl;
 	for (int i = 0; i < closest.size(); ++i) {
-		if (run >= 6000) {
+		if (run >= 4) {
 			run = 0;
 		}
 
 		CCTilePosition tile = closest[i];
-		if (m_map.isPowered(tile.x, tile.y)) {
+		if (m_map.isPowered(tile.x, tile.y) && (prevTile != tile)) {
 			if (m_map.isWalkable(tile)) {
 				tileOld = tile;
 				if (i <= run) {
@@ -372,8 +373,9 @@ CCTilePosition CCBot::GetWalkableTile() {
 					continue;
 				}
 				std::cout << run << std::endl;
-				run += 1000;
-				i += 1000;
+				run += 1;
+				i += 1;
+				prevTile = tile;
 				return tile;
 			}
 		}

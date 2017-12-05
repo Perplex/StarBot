@@ -189,6 +189,15 @@ bool Unit::isTraining() const
 {
     BOT_ASSERT(isValid(), "Unit is not valid");
 #ifdef SC2API
+	if (m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
+		std::cout << m_unit->unit_type << std::endl;
+		for (auto & ability : m_bot->Query()->GetAbilitiesForUnit(m_unit).abilities) {
+			if (ability.ability_id == sc2::ABILITY_ID::TRAINWARP_STALKER) {
+				return false;
+			}
+		}
+		return true;
+	}
     return m_unit->orders.size() > 0;
 #else
     return m_unit->isTraining();
@@ -410,7 +419,7 @@ void Unit::train(const UnitType & type) const
 #ifdef SC2API
 
 	if (type.is(sc2::UNIT_TYPEID::PROTOSS_STALKER) && m_unit->unit_type == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
-		/*float furthest = 0;
+		float furthest = 0;
 		Unit create;
 		for (auto unit : m_bot->GetUnits()) {
 			if (unit.getPlayer() == Players::Self && unit.getType().is(sc2::UNIT_TYPEID::PROTOSS_PYLON)) {
@@ -467,10 +476,10 @@ void Unit::train(const UnitType & type) const
 			if (m_bot->GetUnit(m_unit->tag).isTraining()) {
 				break;
 			}
-		}*/
+		}
 		//m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);
-		CCTilePosition spawnTile = m_bot->GetWalkableTile();		  		
-		m_bot->Actions()->UnitCommand(m_unit, 1414, CCPosition((float)spawnTile.x, (float)spawnTile.y));
+		//CCTilePosition spawnTile = m_bot->GetWalkableTile();		  		
+		//m_bot->Actions()->UnitCommand(m_unit, 1414, CCPosition((float)spawnTile.x, (float)spawnTile.y));
 	}
 	else {
 		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);

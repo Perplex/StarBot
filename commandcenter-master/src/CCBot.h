@@ -30,6 +30,7 @@ class CCBot
     GameCommander           m_gameCommander;
 	bool					expanded;
 	int						run;
+	CCTilePosition			prevTile;
 
     std::vector<Unit>       m_allUnits;
     std::vector<CCPosition> m_baseLocations;
