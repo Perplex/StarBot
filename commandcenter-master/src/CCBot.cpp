@@ -372,7 +372,7 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
 #endif
 }
 
-CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
+/*CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
 	auto & closest = m_map.getClosestTilesTo(position);
 	CCTilePosition tileOld = CCTilePosition(0,0);
 	for (int i = 0; i < closest.size(); ++i) {
@@ -394,7 +394,7 @@ CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
 	}
 	std::cout << "couldnt find a postition" << std::endl;
 	return tileOld;
-}
+}*/
 
 const std::vector<Unit> & CCBot::GetUnits() const
 {

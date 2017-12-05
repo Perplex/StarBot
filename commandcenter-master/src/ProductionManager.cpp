@@ -111,14 +111,14 @@ void ProductionManager::manageBuildOrderQueue()
 		
         // check to see if we can make it right now
         bool canMake = canMakeNow(producer, currentItem.type);
-		std::cout << producer.getType().getName() << " check " << canMake << std::endl;
+		//std::cout << producer.getType().getName() << " check " << canMake << std::endl;
         // TODO: if it's a building and we can't make it yet, predict the worker movement to the location
 
         // if we can make the current item
         if (producer.isValid() && canMake)
         {
             // create it and remove it from the _queue
-			std::cout << producer.getType().getName() << " worked" << std::endl;
+			//std::cout << producer.getType().getName() << " worked" << std::endl;
             create(producer, currentItem);
             m_queue.removeCurrentHighestPriorityItem();
 
@@ -235,6 +235,9 @@ bool ProductionManager::canMakeNow(const Unit & producer, const MetaType & type)
     {
         return false;
     }
+	if (producer.getType().getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
+		return true;
+	}
 	
 #ifdef SC2API
     sc2::AvailableAbilities available_abilities = m_bot.Query()->GetAbilitiesForUnit(producer.getUnitPtr());

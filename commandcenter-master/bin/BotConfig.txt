@@ -20,7 +20,7 @@
         "EnemyDifficulty"           : 1,
         "EnemyRace"                 : "Protoss",
         "MapFile"                   : "CactusValleyLE.SC2Map",
-        "StepSize"                  : 10
+        "StepSize"                  : 1
     },
         
     "Micro" :
