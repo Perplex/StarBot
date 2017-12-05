@@ -75,6 +75,7 @@ int main(int argc, char* argv[])
     });
 
     // Start the game.
+	clock_t begin = clock();
     coordinator.LaunchStarcraft();
     coordinator.StartGame(mapString);
 
@@ -82,6 +83,10 @@ int main(int argc, char* argv[])
     while (true) 
     {
         coordinator.Update();
+		if (coordinator.AllGamesEnded() || (clock() - begin) / CLOCKS_PER_SEC > 600) {
+			coordinator.LeaveGame();
+			break;
+		}
     }
 
     return 0;
