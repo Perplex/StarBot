@@ -41,7 +41,7 @@ void ProductionManager::onFrame()
 		m_queue.queueAsHighestPriority(buildOrder[0], true);
 	}
 
-	else if (m_queue.isEmpty()) {
+	if (m_queue.isEmpty()) {
 		if (!doneQueue) {
 			doneQueue = true;
 			MetaType metaGround("ProtossGroundWeaponsLevel2", m_bot);
@@ -66,10 +66,8 @@ void ProductionManager::onFrame()
 			MetaType metaStalker("Stalker", m_bot);
 
 			buildOrder.add(metaStalker);
-			m_queue.queueAsLowestPriority(buildOrder[0], false);
+			m_queue.queueAsLowestPriority(buildOrder[0], true);
 		}
-		
-
 	}
 	// check the _queue for stuff we can build
 	manageBuildOrderQueue();

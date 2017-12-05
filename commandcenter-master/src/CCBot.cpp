@@ -79,7 +79,6 @@ void CCBot::OnStep()
 	std::vector<Unit> stalkers;
 	std::vector<Unit> pylons;
 	std::vector<Unit> cores;
-	std::vector<Unit> warpgates;
 
 	stalkers.clear();
 	//for chronoboosting units
@@ -88,7 +87,7 @@ void CCBot::OnStep()
 			if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_NEXUS) {
 				nexuses.push_back(unit);
 			}
-			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_GATEWAY) {
+			else if ((unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_GATEWAY) || (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE)) {
 				gateways.push_back(unit);
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_FORGE) {
@@ -108,9 +107,6 @@ void CCBot::OnStep()
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE) {
 				cores.push_back(unit);
-			}
-			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
-				warpgates.push_back(unit);
 			}
 		}
 	}
