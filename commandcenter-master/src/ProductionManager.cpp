@@ -32,9 +32,9 @@ void ProductionManager::onStart()
 void ProductionManager::onFrame()
 {
     // TODO: if nothing is currently building, get a new goal from the strategy manager
-	if (doneQueue && (m_bot.GetSupplyRemaining() <= 6) && (prevSupply != m_bot.GetTotalSupply())) {
+	if (doneQueue && (m_bot.GetSupplyRemaining() <= 7) && (prevSupply != m_bot.GetTotalSupply())) {
 		prevSupply = m_bot.GetTotalSupply();
-		doneQueue = false;
+		//doneQueue = false;
 		BuildOrder buildOrder;
 		MetaType metaPylon("Pylon", m_bot);
 		buildOrder.add(metaPylon);
@@ -43,6 +43,7 @@ void ProductionManager::onFrame()
 
 	else if (m_queue.isEmpty()) {
 		if (!doneQueue) {
+			doneQueue = true;
 			MetaType metaGround("ProtossGroundWeaponsLevel2", m_bot);
 			MetaType metaArm("ProtossGroundArmorsLevel2", m_bot);
 			BuildOrder buildOrder;
@@ -51,10 +52,14 @@ void ProductionManager::onFrame()
 			buildOrder.add(metaStalker);
 			buildOrder.add(metaGround);
 			buildOrder.add(metaArm); 
-			m_queue.queueAsLowestPriority(buildOrder[1], false);
-			m_queue.queueAsLowestPriority(buildOrder[2], false);
-			m_queue.queueAsLowestPriority(buildOrder[0], false);
-
+			for (int i = 0; i < 10; ++i) {
+				m_queue.queueAsLowestPriority(buildOrder[0], true);
+			}
+			m_queue.queueAsLowestPriority(buildOrder[1], true);
+			for (int i = 0; i < 11; ++i) {
+				m_queue.queueAsLowestPriority(buildOrder[0], true);
+			}
+			m_queue.queueAsLowestPriority(buildOrder[2], true);
 		}
 		else {
 			BuildOrder buildOrder;
@@ -63,7 +68,7 @@ void ProductionManager::onFrame()
 			buildOrder.add(metaStalker);
 			m_queue.queueAsLowestPriority(buildOrder[0], false);
 		}
-		doneQueue = true;
+		
 
 	}
 	// check the _queue for stuff we can build
