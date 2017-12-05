@@ -29,7 +29,6 @@ class CCBot
     TechTree                m_techTree;
     GameCommander           m_gameCommander;
 	bool					expanded;
-	int						run;
 
     std::vector<Unit>       m_allUnits;
     std::vector<CCPosition> m_baseLocations;
@@ -48,6 +47,7 @@ public:
 #ifdef SC2API
     void OnGameStart() override;
     void OnStep() override;
+	void OnGameEnd() override;
 #else
     void OnGameStart();
     void OnStep();
@@ -73,5 +73,4 @@ public:
     Unit GetUnit(const CCUnitID & tag) const;
     const std::vector<Unit> & GetUnits() const;
     const std::vector<CCPosition> & GetStartLocations() const;
-	const CCTilePosition & GetWalkableTile(const CCTilePosition & position);
 };

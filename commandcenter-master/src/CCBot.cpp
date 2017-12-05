@@ -2,16 +2,26 @@
 #include "Util.h"
 
 CCBot::CCBot()
-	: m_map(*this)
-	, m_bases(*this)
-	, m_unitInfo(*this)
-	, m_workers(*this)
-	, m_gameCommander(*this)
-	, m_strategy(*this)
-	, m_techTree(*this)
+    : m_map(*this)
+    , m_bases(*this)
+    , m_unitInfo(*this)
+    , m_workers(*this)
+    , m_gameCommander(*this)
+    , m_strategy(*this)
+    , m_techTree(*this)
 	, expanded(false)
 {
-	run = 0;
+    
+}
+
+void CCBot::OnGameEnd() {
+	for (auto unit : m_allUnits) {
+		if (unit.getPlayer() == Players::Self && unit.getType().isResourceDepot()) {
+			std::cout << "Bot Won" << std::endl;
+			return;
+		}
+	}
+	std::cout << "AI won" << std::endl;
 }
 
 void CCBot::OnGameStart() 
@@ -117,88 +127,84 @@ void CCBot::OnStep()
 			nexus.chronoBoost(unit);
 		}
 	}
-
-	// Stuff for warpgate
-	// Static so its only initalized once
-	static bool isPylonBuilt = false;
-	std::vector<const BaseLocation *> thebases;
-	const BaseLocation *enemybase = m_bases.getPlayerStartingBaseLocation(Players::Enemy);
-	static const BaseLocation *warpTobase;
-	static CCPosition warpTo;
-	if (enemybase != 0) {
-		// If base is found it can be seen here
-		const CCPosition enemyPos = enemybase->getPosition();
-		thebases = m_bases.getBaseLocations();
-		static float close_x = 1000000;
-		static float close_y = 1000000;
-		static float dbx = 100000;
-		static float dby = 100000;
-		//static CCPosition warpTo;
-		static float max = 100000;
-		static size_t selected;
-		for (size_t index = 0; index != thebases.size(); ++index) {
-			if (Util::Dist(thebases[index]->getPosition(), enemyPos) < max && thebases[index]->getPosition().x != enemyPos.x && thebases[index]->getPosition().y != enemyPos.y) {
-				max = Util::Dist(thebases[index]->getPosition(), enemyPos);
-				selected = index;
+	
+		int count = 0;
+		for (auto unit : m_allUnits) {
+			if (unit.getPlayer() == Players::Self && unit.getType().is(sc2::UNIT_TYPEID::PROTOSS_STALKER)) {
+				count++;
 			}
 		}
-		warpTo = thebases[selected]->getPosition();
-		warpTobase = thebases[selected];
 
-		// Do it once more
-		for (size_t index = 0; index != thebases.size(); ++index) {
-			if (Util::Dist(thebases[index]->getPosition(), enemyPos) < max && thebases[index]->getPosition().x != enemyPos.x && thebases[index]->getPosition().y != enemyPos.y) {
-				max = Util::Dist(thebases[index]->getPosition(), enemyPos);
-				selected = index;
+		if (count > 11) {
+			for (auto unit : m_allUnits) {
+				if (unit.getPlayer() == Players::Self && unit.getType().is(sc2::UNIT_TYPEID::PROTOSS_GATEWAY)) {
+					unit.morphWarpGate();
+				}
 			}
 		}
-		warpTo = thebases[selected]->getPosition();
-		warpTobase = thebases[selected];
-	}
+		// Stuff for warpgate
+		// Static so its only initalized once
+		static bool isPylonBuilt = false;
+		std::vector<const BaseLocation *> thebases;
+		const BaseLocation *enemybase = m_bases.getPlayerStartingBaseLocation(Players::Enemy);
+		static const BaseLocation *warpTobase;
+		static CCPosition warpTo;
+		if (enemybase != 0) {
+			// If base is found it can be seen here
+			const CCPosition enemyPos = enemybase->getPosition();
+			thebases = m_bases.getBaseLocations();
+			//static CCPosition warpTo;
+			static float max = 100000;
+			static size_t selected;
+			for (size_t index = 0; index != thebases.size(); ++index) {
+				if (Util::Dist(thebases[index]->getPosition(), enemyPos) > 36 && thebases[index]->getPosition().x != enemyPos.x && thebases[index]->getPosition().y != enemyPos.y) {
+					max = Util::Dist(thebases[index]->getPosition(), enemyPos);
+					selected = index;
+				}
+			}
+			warpTo = thebases[selected]->getPosition();
+			warpTobase = thebases[selected];
 
-	if (warpTobase != 0) {
-		//std::cout << "x: " << warpTobase->getPosition().x << " y: " << warpTobase->getPosition().y << std::endl;
-	}
-	// Get static unit so this only happens once
-	static Unit aProbe = probes[0];
+			/*warpTo = thebases[selected]->getPosition();
+			warpTobase = thebases[selected];
 
-	//stalkers.size;
+			// Do it once more
+			for (size_t index = 0; index != thebases.size(); ++index) {
+				if (Util::Dist(thebases[index]->getPosition(), enemyPos) < max && thebases[index]->getPosition().x != enemyPos.x && thebases[index]->getPosition().y != enemyPos.y) {
+					max = Util::Dist(thebases[index]->getPosition(), enemyPos);
+					selected = index;
+				}
+			}
+			warpTo = thebases[selected]->getPosition();
+			warpTobase = thebases[selected];*/
 
-	for (auto & gates : gateways) {
-
-		if (stalkers.size() > 11) {
-			gates.morphWarpGate(gates);
 		}
-	}
-	if (stalkers.size() > 0 && !isPylonBuilt) {
-		aProbe.move(Util::GetTilePosition(warpTo));
-		float isCloseTox = aProbe.getPosition().x - warpTobase->getPosition().x;
-		float isCloseToy = aProbe.getPosition().y - warpTobase->getPosition().y;
-		if (isCloseTox < 1 && isCloseTox > -1 && isCloseToy < 1 && isCloseToy > -1) {
-			aProbe.build(UnitType(sc2::UNIT_TYPEID::PROTOSS_PYLON, *this), Util::GetTilePosition(warpTo));
 
-			// Once its being built upgrade to warpgate
 
-		}
-		for (auto & pylon : pylons) {
-			float isCloseTopx = pylon.getPosition().x - warpTobase->getPosition().x;
-			float isCloseTopy = pylon.getPosition().y - warpTobase->getPosition().y;
-			if (isCloseTopx < 1 && isCloseTopx > -1 && isCloseTopy < 1 && isCloseTopy > -1) {
-				isPylonBuilt = true;
-				const static bool pylonBuilt = true;
+		// Get static unit so this only happens once
+		static Unit aProbe = probes[0];
+
+		//stalkers.size;
+
+		if (stalkers.size() > 0 && !isPylonBuilt) {
+			aProbe.move(Util::GetTilePosition(warpTo));
+			float isCloseTox = aProbe.getPosition().x - warpTobase->getPosition().x;
+			float isCloseToy = aProbe.getPosition().y - warpTobase->getPosition().y;
+			if (isCloseTox < 1 && isCloseTox > -1 && isCloseToy < 1 && isCloseToy > -1) {
+				aProbe.build(UnitType(sc2::UNIT_TYPEID::PROTOSS_PYLON, *this), Util::GetTilePosition(warpTo));
+
+				// Once its being built upgrade to warpgate
+
+			}
+			for (auto & pylon : pylons) {
+				float isCloseTopx = pylon.getPosition().x - warpTobase->getPosition().x;
+				float isCloseTopy = pylon.getPosition().y - warpTobase->getPosition().y;
+				if (isCloseTopx < 1 && isCloseTopx > -1 && isCloseTopy < 1 && isCloseTopy > -1) {
+					isPylonBuilt = true;
+					const static bool pylonBuilt = true;
+				}
 			}
 		}
-	}
-
-	// FORCE UPGRADE THE CYBER CORE
-	static bool hasSearched = false;
-	if (cores.size() > 0 && !hasSearched) {
-		cores[0].upgrade(sc2::UPGRADE_ID::WARPGATERESEARCH);
-		// set it to true?
-		hasSearched = true;
-	}
-
-	//std::cout << isPylonBuilt << std::endl;
 
 	//expand base if running low on resources, only once atm
 	if (!expanded) {
@@ -212,10 +218,12 @@ void CCBot::OnStep()
 	}
 
 	// Try to do warpgate shit
-	/*for (auto & warpg : warpgates) {
-
-		warpg.train(UnitType(sc2::UNIT_TYPEID::PROTOSS_STALKER, *this));
-	}*/
+	for (auto & warpg : warpgates) {
+		if (warpg.getPlayer() == Players::Self) {
+			warpg.train(UnitType(sc2::UNIT_TYPEID::PROTOSS_STALKER, *this));
+		}
+		
+	}
 
     m_map.onFrame();
     m_unitInfo.onFrame();
@@ -363,27 +371,7 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
     return Unit(BWAPI::Broodwar->getUnit(tag), *(CCBot *)this);
 #endif
 }
-const CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
-	auto & closest = m_map.getClosestTilesTo(position);
-	for (int i = 0; i < closest.size(); ++i) {
-		if (run >= 3) {
-			run = 0;
-		}
 
-		auto & tile = closest[i];
-		if (m_map.isPowered(tile.x, tile.y)) {
-			if (m_map.isWalkable(tile)) {
-				if (i <= run) {
-					continue;
-				}
-				++run;
-				return tile;
-			}
-		}
-	}
-	std::cout << "couldnt find a postition" << std::endl;
-	return position;
-}
 const std::vector<Unit> & CCBot::GetUnits() const
 {
     return m_allUnits;
