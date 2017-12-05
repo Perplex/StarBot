@@ -42,14 +42,29 @@ void ProductionManager::onFrame()
 	}
 
 	else if (m_queue.isEmpty()) {
-		MetaType metaGround("ProtossGroundWeaponsLevel2", m_bot);
-		MetaType metaArm("ProtossGroundArmorsLevel2", m_bot);
-		doneQueue = true;
-		BuildOrder buildOrder;
-		MetaType metaStalker("Stalker", m_bot);
+		if (!doneQueue) {
+			MetaType metaGround("ProtossGroundWeaponsLevel2", m_bot);
+			MetaType metaArm("ProtossGroundArmorsLevel2", m_bot);
+			BuildOrder buildOrder;
+			MetaType metaStalker("Stalker", m_bot);
 
-		buildOrder.add(metaStalker);
-		m_queue.queueAsLowestPriority(buildOrder[0], false);
+			buildOrder.add(metaStalker);
+			buildOrder.add(metaGround);
+			buildOrder.add(metaArm); 
+			m_queue.queueAsLowestPriority(buildOrder[1], false);
+			m_queue.queueAsLowestPriority(buildOrder[2], false);
+			m_queue.queueAsLowestPriority(buildOrder[0], false);
+
+		}
+		else {
+			BuildOrder buildOrder;
+			MetaType metaStalker("Stalker", m_bot);
+
+			buildOrder.add(metaStalker);
+			m_queue.queueAsLowestPriority(buildOrder[0], false);
+		}
+		doneQueue = true;
+
 	}
 	// check the _queue for stuff we can build
 	manageBuildOrderQueue();
@@ -235,9 +250,6 @@ bool ProductionManager::canMakeNow(const Unit & producer, const MetaType & type)
     {
         return false;
     }
-	if (producer.getType().getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
-		return true;
-	}
 	
 #ifdef SC2API
     sc2::AvailableAbilities available_abilities = m_bot.Query()->GetAbilitiesForUnit(producer.getUnitPtr());
@@ -251,6 +263,9 @@ bool ProductionManager::canMakeNow(const Unit & producer, const MetaType & type)
     {
         // check to see if one of the unit's available abilities matches the build ability type
 		sc2::AbilityID MetaTypeAbility = m_bot.Data(type).buildAbility;
+		if (producer.getType().getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_WARPGATE) {
+			MetaTypeAbility = sc2::ABILITY_ID::TRAINWARP_STALKER;
+		}
 		if (MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL1 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL2 || MetaTypeAbility == sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONSLEVEL3) {
 			MetaTypeAbility = sc2::ABILITY_ID::RESEARCH_PROTOSSAIRWEAPONS;
 		}
