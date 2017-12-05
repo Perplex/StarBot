@@ -212,10 +212,10 @@ void CCBot::OnStep()
 	}
 
 	// Try to do warpgate shit
-	for (auto & warpg : warpgates) {
+	/*for (auto & warpg : warpgates) {
 
 		warpg.train(UnitType(sc2::UNIT_TYPEID::PROTOSS_STALKER, *this));
-	}
+	}*/
 
     m_map.onFrame();
     m_unitInfo.onFrame();
@@ -369,12 +369,13 @@ const CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
 		if (run >= 3) {
 			run = 0;
 		}
-		if (i <= run) {
-			continue;
-		}
+
 		auto & tile = closest[i];
 		if (m_map.isPowered(tile.x, tile.y)) {
 			if (m_map.isWalkable(tile)) {
+				if (i <= run) {
+					continue;
+				}
 				++run;
 				return tile;
 			}

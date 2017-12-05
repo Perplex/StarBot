@@ -42,6 +42,8 @@ void ProductionManager::onFrame()
 	}
 
 	else if (m_queue.isEmpty()) {
+		MetaType metaGround("ProtossGroundWeaponsLevel2", m_bot);
+		MetaType metaArm("ProtossGroundArmorsLevel2", m_bot);
 		doneQueue = true;
 		BuildOrder buildOrder;
 		MetaType metaStalker("Stalker", m_bot);
@@ -142,7 +144,10 @@ void ProductionManager::manageBuildOrderQueue()
 Unit ProductionManager::getProducer(const MetaType & type, CCPosition closestTo)
 {
     // get all the types of units that cna build this type
-    auto & producerTypes = m_bot.Data(type).whatBuilds;
+    std::vector<UnitType> producerTypes = m_bot.Data(type).whatBuilds;
+	if ((type.getName() == "Gateway")) {
+		producerTypes.push_back(UnitType(sc2::UNIT_TYPEID::PROTOSS_WARPGATE, m_bot));
+	}
 
     // make a set of all candidate producers
     std::vector<Unit> candidateProducers;
