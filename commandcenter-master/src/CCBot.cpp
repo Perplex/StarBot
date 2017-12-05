@@ -146,7 +146,7 @@ void CCBot::OnStep()
 	// Static so its only initalized once
 	static bool isPylonBuilt = false;
 	std::vector<const BaseLocation *> thebases;
-	const BaseLocation *enemybase = m_bases.getPlayerStartingBaseLocation(Players::Enemy);
+	enemybase = m_bases.getPlayerStartingBaseLocation(Players::Enemy);
 	static const BaseLocation *warpTobase;
 	static CCPosition warpTo;
 	if (enemybase != 0) {
@@ -354,11 +354,12 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
 #endif
 }
 
-CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
-	auto & closest = m_map.getClosestTilesTo(position);
+CCTilePosition CCBot::GetWalkableTile() {
+	auto closest = enemybase->getClosestTiles();
 	CCTilePosition tileOld = CCTilePosition(0,0);
+	std::cout << closest.size() << " closest" << std::endl;
 	for (int i = 0; i < closest.size(); ++i) {
-		if (run >= 3) {
+		if (run >= 6000) {
 			run = 0;
 		}
 
@@ -367,10 +368,12 @@ CCTilePosition & CCBot::GetWalkableTile(const CCTilePosition & position) {
 			if (m_map.isWalkable(tile)) {
 				tileOld = tile;
 				if (i <= run) {
+					//std::cout << "running" << std::endl;
 					continue;
 				}
 				std::cout << run << std::endl;
-				++run;
+				run += 1000;
+				i += 1000;
 				return tile;
 			}
 		}

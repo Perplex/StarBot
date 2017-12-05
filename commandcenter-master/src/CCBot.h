@@ -66,6 +66,7 @@ public:
     const TypeData & Data(const Unit & unit) const;
     CCRace GetPlayerRace(int player) const;
     CCPosition GetStartLocation() const;
+	const BaseLocation *enemybase;
 
     int GetMinerals() const;
     int GetGas() const;
@@ -74,6 +75,6 @@ public:
     Unit GetUnit(const CCUnitID & tag) const;
     const std::vector<Unit> & GetUnits() const;
     const std::vector<CCPosition> & GetStartLocations() const;
-	CCTilePosition & GetWalkableTile(const CCTilePosition & position);
+	CCTilePosition GetWalkableTile();
 
 };
