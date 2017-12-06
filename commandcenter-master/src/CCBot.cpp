@@ -79,8 +79,9 @@ void CCBot::OnStep()
 	std::vector<Unit> stalkers;
 	std::vector<Unit> pylons;
 	std::vector<Unit> cores;
-
+	std::set<const BaseLocation*> test;
 	stalkers.clear();
+	test.clear();
 	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
 		if (unit.getPlayer() == Players::Self) {
@@ -103,6 +104,7 @@ void CCBot::OnStep()
 				stalkers.push_back(unit);
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PYLON) {
+				//unit.getHitPoints()
 				pylons.push_back(unit);
 			}
 			else if (unit.getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_CYBERNETICSCORE) {
@@ -167,6 +169,27 @@ void CCBot::OnStep()
 	// Get static unit so this only happens once
 	static Unit aProbe = probes[0];
 
+	if (isPylonBuilt) {
+		if (aProbe.isAlive()) {
+			aProbe.move(Util::GetTilePosition(m_bases.getPlayerStartingBaseLocation(Players::Self)->getPosition()));
+		}
+	}
+
+	if (aProbe.isIdle()) {
+		m_workers.finishedWithWorker(aProbe);
+	}
+	
+	// This is there is no base and we dont have a scout scoot
+	/*
+	test = m_bases.getOccupiedBaseLocations(Players::Enemy);
+	if (test.empty()) {
+		std::cout << "NO BASE" << std::endl;
+	}
+
+	if (!test.empty()) {
+		std::cout << "BASE" << std::endl;
+	}
+	*/
 	if (stalkers.size() > 0 && !isPylonBuilt) {
 		aProbe.move(Util::GetTilePosition(warpTo));
 		float isCloseTox = aProbe.getPosition().x - warpTobase->getPosition().x;
