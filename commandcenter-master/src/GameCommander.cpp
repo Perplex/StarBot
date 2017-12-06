@@ -78,6 +78,12 @@ void GameCommander::setValidUnits()
 void GameCommander::setScoutUnits()
 {
     // if we haven't set a scout unit, do it
+	for (auto it = m_scoutUnits.begin(); it != m_scoutUnits.end(); it++) {
+		if (!it->isAlive()) {
+			m_scoutUnits.erase(it);
+			it--;
+		}
+	}
     if (m_scoutUnits.empty())
     {
         // if it exists
@@ -92,7 +98,6 @@ void GameCommander::setScoutUnits()
                 m_scoutManager.setWorkerScout(workerScout);
                 assignUnit(workerScout, m_scoutUnits);
                 m_initialScoutSet = true;
-				
             }
             else
             {
