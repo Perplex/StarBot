@@ -1,10 +1,10 @@
 # StarBot - Automaton 2017
 StarCraft II Bot
 ## Compilation Instructions
-Clone the repository from github and open CommandCenter.sln in Visual Studio 2017  
-Ensure that the CactusValleyLE.SC2Map is in the maps folder in your Starcraft 2 install directory  
-The paths to the sc2 api should be correct in the solution, but if they're not, fix them  
-Build the solution in Visual Studio 2017  
+- Clone the repository from github and open CommandCenter.sln in Visual Studio 2017  
+- Ensure that the CactusValleyLE.SC2Map is in the maps folder in your Starcraft 2 install directory  
+- The paths to the sc2 api should be correct in the solution, but if they're not, fix them  
+- Build the solution in Visual Studio 2017  
 
 ## Status (2/12/2017): In-Progress
 - Compilable Command Center and SC2 API files pushed (Ceegan)
