@@ -64,7 +64,7 @@ void ProductionManager::onFrame()
 		m_queue.queueAsHighestPriority(buildOrder[1], true);
 		m_queue.queueAsHighestPriority(buildOrder[0], true);
 	}
-	if (doneQueue && (probes < 20) && (prevProbe != probes)) {
+	if (doneQueue && (probes < 16) && (prevProbe != probes)) {
 		prevProbe = probes;
 		BuildOrder buildOrder;
 		MetaType metaProbe("Probe", m_bot);
