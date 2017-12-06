@@ -48,7 +48,6 @@ public:
 #ifdef SC2API
     void OnGameStart() override;
     void OnStep() override;
-	void OnGameEnd() override;
 #else
     void OnGameStart();
     void OnStep();

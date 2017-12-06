@@ -53,95 +53,55 @@ void ScoutManager::moveScouts()
     auto workerScout = m_scoutUnit;
     if (!workerScout.isValid()) { return; }
 
-    CCHealth scoutHP = workerScout.getHitPoints() + workerScout.getShields();
-
     // get the enemy base location, if we have one
     const BaseLocation * enemyBaseLocation = m_bot.Bases().getPlayerStartingBaseLocation(Players::Enemy);
+	static std::vector<const BaseLocation *> lastSeenBases = m_bot.Bases().getBaseLocations();
 
     int scoutDistanceThreshold = 20;
 
-    // if we know where the enemy region is and where our scout is
-    if (enemyBaseLocation)
-    {
-        int scoutDistanceToEnemy = m_bot.Map().getGroundDistance(workerScout.getPosition(), enemyBaseLocation->getPosition());
-        bool scoutInRangeOfenemy = enemyBaseLocation->containsPosition(workerScout.getPosition());
+	if (enemyBaseLocation) {
+		m_scoutStatus = "Enemy base known, exploring";
 
-        // we only care if the scout is under attack within the enemy region
-        // this ignores if their scout worker attacks it on the way to their base
-        if (scoutHP < m_previousScoutHP)
-        {
-            m_scoutUnderAttack = true;
-        }
+		for (auto Location : m_bot.Bases().getBaseLocations())
+		{
 
-        if (scoutHP == m_previousScoutHP && !enemyWorkerInRadiusOf(workerScout.getPosition()))
-        {
-            m_scoutUnderAttack = false;
-        }
+			// if we haven't explored it yet then scout it out
+			// TODO: this is where we could change the order of the base scouting, since right now it's iterator order
+			if (!Location->isExplored() && m_bot.Bases().getOccupiedBaseLocations(Players::Enemy).find(Location) == m_bot.Bases().getOccupiedBaseLocations(Players::Enemy).end() && m_bot.Bases().getOccupiedBaseLocations(Players::Self).find(Location) == m_bot.Bases().getOccupiedBaseLocations(Players::Self).end())
+			{
+				m_scoutUnit.move(Location->getPosition());	
+				return;
+			}
+		}
+		
+		if (lastSeenBases[0]->isOccupiedByPlayer(Players::Enemy) || enemyBaseLocation == lastSeenBases[0] || lastSeenBases[0]->isOccupiedByPlayer(Players::Self)) {
+			lastSeenBases.erase(lastSeenBases.begin());
+		}
 
-        // if the scout is in the enemy region
-        if (scoutInRangeOfenemy)
-        {
-            // get the closest enemy worker
-            Unit closestEnemyWorkerUnit = closestEnemyWorkerTo(workerScout.getPosition());
+		if (lastSeenBases[0]->getPosition().x == m_scoutUnit.getPosition().x && lastSeenBases[0]->getPosition().y == m_scoutUnit.getPosition().y) {
+			auto temp = lastSeenBases[0];
+			lastSeenBases.erase(lastSeenBases.begin());
+			lastSeenBases.push_back(temp);
+		}
 
-            // if the worker scout is not under attack
-            if (!m_scoutUnderAttack)
-            {
-                // if there is a worker nearby, harass it
-                if (m_bot.Config().ScoutHarassEnemy && closestEnemyWorkerUnit.isValid() && (Util::Dist(workerScout, closestEnemyWorkerUnit) < 12))
-                {
-                    m_scoutStatus = "Harass enemy worker";
-                    m_scoutUnit.attackUnit(closestEnemyWorkerUnit);
-                }
-                // otherwise keep moving to the enemy base location
-                else
-                {
-                    m_scoutStatus = "Moving to enemy base location";
-                    m_scoutUnit.move(enemyBaseLocation->getPosition());
-                }
-            }
-            // if the worker scout is under attack
-            else
-            {
-                m_scoutStatus = "Under attack inside, fleeing";
-                m_scoutUnit.move(getFleePosition());
-            }
-        }
-        // if the scout is not in the enemy region
-        else if (m_scoutUnderAttack)
-        {
-            m_scoutStatus = "Under attack outside, fleeing";
+		m_scoutUnit.move(lastSeenBases[0]->getPosition());
+		return;
+	}
+	else {
+		m_scoutStatus = "Enemy base unknown, searching";
 
-            m_scoutUnit.move(getFleePosition());
-        }
-        else
-        {
-            m_scoutStatus = "Enemy region known, going there";
+		for (const BaseLocation * Location : m_bot.Bases().getStartingBaseLocations())
+		{
+			// if we haven't explored it yet then scout it out
+			// TODO: this is where we could change the order of the base scouting, since right now it's iterator order
+			if (!m_bot.Map().isExplored(Location->getPosition()))
+			{
+				m_scoutUnit.move(Location->getPosition());
+				return;
+			}
+		}
+	}
 
-            // move to the enemy region
-            m_scoutUnit.move(enemyBaseLocation->getPosition());
-        }
-
-    }
-
-    // for each start location in the level
-    if (!enemyBaseLocation)
-    {
-        m_scoutStatus = "Enemy base unknown, exploring";
-
-        for (const BaseLocation * startLocation : m_bot.Bases().getStartingBaseLocations())
-        {
-            // if we haven't explored it yet then scout it out
-            // TODO: this is where we could change the order of the base scouting, since right now it's iterator order
-            if (!m_bot.Map().isExplored(startLocation->getPosition()))
-            {
-                m_scoutUnit.move(startLocation->getPosition());
-                return;
-            }
-        }
-    }
-
-    m_previousScoutHP = scoutHP;
 }
 
 Unit ScoutManager::closestEnemyWorkerTo(const CCPosition & pos) const
