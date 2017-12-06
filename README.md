@@ -16,7 +16,8 @@ StarCraft II Bot
 - Chronoboosting based on priority orider (Gregory)
 - Second Base is made when first base resources run low (Gregory)
 - Stalker are created endlessly and pylons are constructed when needed (Gregory)
-- A pylon is created accross the map (Brandon)
+- A pylon is created and recreated accross the map (Brandon)
+- Warpgates create stalkers accross the map (Brandon)
 
 ## Authors
 - Ceegan Hale
