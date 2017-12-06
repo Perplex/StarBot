@@ -433,24 +433,24 @@ void Unit::train(const UnitType & type) const
 		std::vector <sc2::Point2D> possible;
 
 		float xCenter = create.getPosition().x, yCenter = create.getPosition().y;
-		for (int x =  xCenter- 7; x <= xCenter; x++) {
-			for (int y = yCenter - 7; y <= yCenter; y++) {
+		for (auto x =  xCenter- 7; x <= xCenter; x++) {
+			for (auto y = yCenter - 7; y <= yCenter; y++) {
 				if ((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter) <= 49) {
 					bool valid[4] = {true, true, true, true};
 					float xSym = xCenter - (x - xCenter);
 					float ySym = yCenter - (y - yCenter);
 					for (auto unit : m_bot->GetUnits()) {
 						CCPosition temp = unit.getPosition();
-						if (temp == CCPosition(x, y) || !m_bot->Map().isWalkable(x, y)) {
+						if (temp == CCPosition(x, y) || !m_bot->Map().isWalkable(int(x), int(y))) {
 							valid[0] = false;;
 						}
-						if (temp == CCPosition(xSym, y) || !m_bot->Map().isWalkable(xSym, y)) {
+						if (temp == CCPosition(xSym, y) || !m_bot->Map().isWalkable(int(xSym), int(y))) {
 							valid[1] = false;
 						}
-						if (temp == CCPosition(x, ySym) || !m_bot->Map().isWalkable(x, ySym)) {
+						if (temp == CCPosition(x, ySym) || !m_bot->Map().isWalkable(int(x), int(ySym))) {
 							valid[2] = false;
 						}
-						if (temp == CCPosition(xSym, ySym) || !m_bot->Map().isWalkable(xSym, ySym)) {
+						if (temp == CCPosition(xSym, ySym) || !m_bot->Map().isWalkable(int(xSym), int(ySym))) {
 							valid[3] = false;
 						}
 					}
@@ -476,8 +476,6 @@ void Unit::train(const UnitType & type) const
 				break;
 			}
 		}
-		//CCTilePosition spawnTile = m_bot->GetWalkableTile();		  		
-		//m_bot->Actions()->UnitCommand(m_unit, 1414, CCPosition((float)spawnTile.x, (float)spawnTile.y));
 	}
 	else {
 		m_bot->Actions()->UnitCommand(m_unit, m_bot->Data(type).buildAbility);

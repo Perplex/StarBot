@@ -15,16 +15,6 @@ CCBot::CCBot()
 	run = 0;
 }
 
-void CCBot::OnGameEnd() {
-	for (auto unit : m_allUnits) {
-		if (unit.getPlayer() == Players::Self && unit.getType().isResourceDepot()) {
-			std::cout << "Bot Won" << std::endl;
-			return;
-		}
-	}
-	std::cout << "AI won" << std::endl;
-}
-
 void CCBot::OnGameStart()
 {
 	m_config.readConfigFile();

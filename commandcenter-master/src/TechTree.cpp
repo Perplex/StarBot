@@ -308,7 +308,7 @@ const TypeData & TechTree::getData(const UnitType & type) const
 {
     if (m_unitTypeData.find(type) == m_unitTypeData.end())
     {
-        std::cout << "WARNING: Unit type not found: " << type.getName() << "\n";
+		//std::cout << "WARNING: Unit type not found: " << type.getName() << "\n";
         return m_unitTypeData.begin()->second;
     }
 
