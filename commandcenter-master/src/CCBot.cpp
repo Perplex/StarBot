@@ -82,6 +82,7 @@ void CCBot::OnStep()
 	std::set<const BaseLocation*> test;
 	stalkers.clear();
 	test.clear();
+	probes.clear();
 	//for chronoboosting units
 	for (auto & unit : m_allUnits) {
 		if (unit.getPlayer() == Players::Self) {
@@ -173,12 +174,31 @@ void CCBot::OnStep()
 		if (aProbe.isAlive()) {
 			aProbe.move(Util::GetTilePosition(m_bases.getPlayerStartingBaseLocation(Players::Self)->getPosition()));
 		}
+		else {
+			aProbe = probes[0];
+		}
+
+
+		float aNum;
+		bool isDead = true;
+		//bool doBreak = false;
+		for (auto & pylon : pylons) {
+			aNum = Util::Dist(m_bases.getPlayerStartingBaseLocation(Players::Self)->getPosition(), pylon.getPosition());
+			if (aNum > 50) {
+				isDead = false;
+			}
+		}
+		if (isDead) {
+			isPylonBuilt = false;
+		}
 	}
 
 	if (aProbe.isIdle()) {
 		m_workers.finishedWithWorker(aProbe);
 	}
 	
+
+
 	// This is there is no base and we dont have a scout scoot
 	/*
 	test = m_bases.getOccupiedBaseLocations(Players::Enemy);
