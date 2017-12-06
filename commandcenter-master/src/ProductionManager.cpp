@@ -8,6 +8,8 @@ ProductionManager::ProductionManager(CCBot & bot)
     , m_queue           (bot)
 	,doneQueue			(false)
 	,prevSupply			(0)
+	,prevProbe			(0)
+	,prevPhoton			(0)
 {
 
 }
@@ -40,6 +42,33 @@ void ProductionManager::onFrame()
 		buildOrder.add(metaPylon);
 		m_queue.queueAsHighestPriority(buildOrder[0], true);
 	}
+	int probes = 0;
+	int photon = 0;
+	if (doneQueue) {
+		for (auto & unit : m_bot.GetUnits()) {
+			if ((unit.getPlayer() == Players::Self) && unit.getType().getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PROBE) {
+				++probes;
+			}
+			if ((unit.getPlayer() == Players::Self) && unit.getType().getAPIUnitType() == sc2::UNIT_TYPEID::PROTOSS_PHOTONCANNON) {
+				++photon;
+			}
+		}
+	}
+	if (doneQueue && (photon < 1) && (prevPhoton != photon)) {
+		prevPhoton = photon;
+		BuildOrder buildOrder;
+		MetaType metaProbe("PhotonCannon", m_bot);
+		buildOrder.add(metaProbe);
+		m_queue.queueAsHighestPriority(buildOrder[0], true);
+	}
+	if (doneQueue && (probes <= 16) && (prevProbe != probes)) {
+		prevProbe = probes;
+		BuildOrder buildOrder;
+		MetaType metaProbe("Probe", m_bot);
+		buildOrder.add(metaProbe);
+		m_queue.queueAsHighestPriority(buildOrder[0], true);
+	}
+
 
 	if (m_queue.isEmpty()) {
 		if (!doneQueue) {
@@ -179,7 +208,7 @@ Unit ProductionManager::getProducer(const MetaType & type, CCPosition closestTo)
         if (!unit.isCompleted()) { continue; }
         if (m_bot.Data(unit).isBuilding && unit.isTraining()) { continue; }
         if (unit.isFlying()) { continue; }
-
+		if (unit.getPlayer() != Players::Self) { continue; }
         // TODO: if unit is not powered continue
         // TODO: if the type is an addon, some special cases
         // TODO: if the type requires an addon and the producer doesn't have one

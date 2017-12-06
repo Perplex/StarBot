@@ -12,7 +12,6 @@ CCBot::CCBot()
 	, expanded(false)
 	, prevTile(0,0)
 {
-	run = 0;
 }
 
 void CCBot::OnGameEnd() {
@@ -395,26 +394,23 @@ Unit CCBot::GetUnit(const CCUnitID & tag) const
 
 CCTilePosition CCBot::GetWalkableTile() {
 	auto closest = enemybase->getClosestTiles();
+	
 	CCTilePosition tileOld = CCTilePosition(0,0);
 	for (int i = 0; i < closest.size(); ++i) {
-		if (run >= 4) {
-			run = 0;
-		}
 
 		CCTilePosition tile = closest[i];
-		if (m_map.isPowered(tile.x, tile.y) && (prevTile != tile)) {
-			if (m_map.isWalkable(tile)) {
-				tileOld = tile;
-				if (i <= run) {
-					//std::cout << "running" << std::endl;
-					continue;
+		if (m_map.isConnected(tile, Util::GetTilePosition(m_bases.getPlayerStartingBaseLocation(Players::Self)->getPosition()))) {
+			if (m_map.isWalkable(tile.x, tile.y) && m_map.isWalkable(tile.x, tile.y)) {
+				if ((prevTile != tile) && m_map.isPowered(tile.x, tile.y)) {
+					tileOld = tile;
+
+					prevTile = tile;
+					return tile;
 				}
-				run += 1;
-				i += 1;
-				prevTile = tile;
-				return tile;
 			}
 		}
+		
+
 	}
 	std::cout << "couldnt find a postition" << std::endl;
 	return tileOld;

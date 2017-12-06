@@ -25,6 +25,8 @@ class ProductionManager
     int     getFreeGas();
 	bool	doneQueue;
 	int		prevSupply;
+	int		prevProbe;
+	int		prevPhoton;
 
 public:
 

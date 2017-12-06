@@ -29,7 +29,6 @@ class CCBot
     TechTree                m_techTree;
     GameCommander           m_gameCommander;
 	bool					expanded;
-	int						run;
 	CCTilePosition			prevTile;
 
     std::vector<Unit>       m_allUnits;

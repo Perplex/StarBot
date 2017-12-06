@@ -455,16 +455,16 @@ void Unit::train(const UnitType & type) const
 						}
 					}
 					
-					if (valid[0]) {
+					if (valid[0] && m_bot->Map().isConnected(sc2::Point2D(create.getPosition()), sc2::Point2D(CCPosition(x, y)))) {
 						possible.push_back(sc2::Point2D(CCPosition(x, y)));
 					}
-					if (valid[1]) {
+					if (valid[1] && m_bot->Map().isConnected(sc2::Point2D(create.getPosition()), sc2::Point2D(CCPosition(xSym, y)))) {
 						possible.push_back(sc2::Point2D(CCPosition(xSym, y)));
 					}
-					if (valid[2]) {
+					if (valid[2] && m_bot->Map().isConnected(sc2::Point2D(create.getPosition()), sc2::Point2D(CCPosition(x, ySym)))) {
 						possible.push_back(sc2::Point2D(CCPosition(x, ySym)));
 					}
-					if (valid[3]) {
+					if (valid[3] && m_bot->Map().isConnected(sc2::Point2D(create.getPosition()), sc2::Point2D(CCPosition(xSym, ySym)))) {
 						possible.push_back(sc2::Point2D(CCPosition(xSym, ySym)));
 					}				
 				}
