@@ -181,7 +181,6 @@ void CCBot::OnStep()
 
 		float aNum;
 		bool isDead = true;
-		//bool doBreak = false;
 		for (auto & pylon : pylons) {
 			aNum = Util::Dist(m_bases.getPlayerStartingBaseLocation(Players::Self)->getPosition(), pylon.getPosition());
 			if (aNum > 50) {
