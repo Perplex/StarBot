@@ -7,7 +7,7 @@ StarCraft II Bot
 - The sc2 api is included in this github repo  
 - Build the solution in Visual Studio 2017  
 
-## Status (06/12/2017): In-Progress
+## Status (06/12/2017): Complete
 - Compilable Command Center and SC2 API files pushed (Ceegan)
 - All upgrades can be researched (Ceegan)
 - Base expansion available (Ceegan)
@@ -18,7 +18,6 @@ StarCraft II Bot
 - Second Base is made when first base resources run low (Gregory)
 - Stalker are created endlessly and pylons are constructed when needed (Gregory)
 - A pylon is created and recreated accross the map (Brandon)
-- Forward pylon is rebuilt after being destroyed (Brandon)
 - Warpgates create stalkers accross the map (Brandon)
 
 ## Authors
